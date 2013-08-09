@@ -48,4 +48,6 @@ li {
 
 .label {
 	padding-right:40px;
+	padding-left:5px;
+	color: #247CC1;
 }
