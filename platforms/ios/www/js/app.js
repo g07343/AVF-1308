@@ -63,7 +63,7 @@ $("#instagramSearchSubmit").on("click", function() {
 });
 
 var showInstagramResults = function(info) {
-	//console.log(info);
+	console.log(info);
 	$.each(info.data, function(index, photo){
 		var pic = "<li class='picLinks'><a href=#detailView id=" + photo.images.standard_resolution.url + ">" + "<img src='" + photo.images.thumbnail.url + "' > '" + photo.caption.text + "</a></li>"
 		$("#instagram-ul").append(pic);
@@ -77,16 +77,30 @@ $("#flickrSearchSubmit").on("click", function() {
 	$("#flickr-ul").empty();
 	//console.log($("#instagramSearch").val());
 	if(term !== "") {
-		console.log("flickr search enabled!");
+		var url = "http://api.flickr.com/services/rest/?&method=flickr.photos.search&api_key=dcd118bdd36ff7226ddde37bbdb8e027&tags=bird&format=json&jsoncallback=?&per_page=20";
+		$.getJSON(url, showFlickrResults)
+		//console.log("flickr search enabled!");
 	} else {
 		alert("Please choose a topic to search!");
 	}
 });
+
+var showFlickrResults = function(info) {
+	//console.log(info);
+	$.each(info.photos.photo, function(index, picture){
+		console.log(index);
+	});
+};
 //the below code allows me to fire an event listener on the dynamically created anchor tags
-$(document.body).on("click", ".picLinks", function(){
+$(document.body).on("click", ".picLinks", function(event){
     //fullPhoto = $(this).children("a").attr("id");
-   fullPhoto = "<img src = " + ($(this).children("div").children("div").children('a').attr("id")) + ">";
-   $("#detailView").append(fullPhoto);
+    $("#detailView").children("img").remove();
+    event.preventDefault();
+   	fullPhoto = "<img src = " + ($(this).children("div").children("div").children('a').attr("id")) + ">";
+   	//header = '<div data-role="header" data-theme="b" data-add-back-btn="true"><h1>View full size</h1></div>';
+   	$("#detailView").append(fullPhoto);
+   	$.mobile.changePage("#detailView");
+    
 
 
 });
