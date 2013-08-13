@@ -1,0 +1,41 @@
+/*Matthew Lewis
+Advanced Visual Frameworks Term 1308
+Android css file*/
+
+
+h1 {
+    font-size:36px;
+    font-weight:normal;
+    margin:0px;
+    overflow:visible;
+    padding:0px;
+    text-align:center;
+}
+
+#flickrForm {
+    display:none;
+}
+
+#instagramForm {
+    display:none;
+}
+
+#instagramSearchSection {
+    display:none;
+}
+
+#flickrSearchSection {
+  display:none;
+}
+.ui-mobile-viewport, .ui-overlay-c {
+      background:url('paper.png') no-repeat center center fixed;
+      -webkit-background-size: cover;          
+      -moz-background-size: cover;         
+       -o-background-size: cover;          
+       background-size: cover;
+ }  
+ 
+ img.center {   display: block;   margin-left: auto;   margin-right: auto; }
+
+
+ 
