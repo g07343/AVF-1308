@@ -65,7 +65,7 @@ $("#instagramSearchSubmit").on("click", function() {
 var showInstagramResults = function(info) {
 	console.log(info);
 	$.each(info.data, function(index, photo){
-		var pic = "<li class='picLinks'><a href=#detailView id=" + photo.images.standard_resolution.url + ">" + "<img src='" + photo.images.thumbnail.url + "' > '" + photo.caption.text + "</a></li>"
+		var pic = "<li class='picLinks'><a href=#detailView id=" + photo.images.standard_resolution.url + ">" + "<img src='" + photo.images.thumbnail.url + "' > '" + photo.caption.text + "</a></li>";
 		$("#instagram-ul").append(pic);
 		$("#instagram-ul").listview('refresh');
 	});
@@ -77,7 +77,7 @@ $("#flickrSearchSubmit").on("click", function() {
 	$("#flickr-ul").empty();
 	//console.log($("#instagramSearch").val());
 	if(term !== "") {
-		var url = "http://api.flickr.com/services/rest/?&method=flickr.photos.search&api_key=dcd118bdd36ff7226ddde37bbdb8e027&tags=bird&format=json&jsoncallback=?&per_page=20";
+		var url = "http://api.flickr.com/services/rest/?&method=flickr.photos.search&api_key=dcd118bdd36ff7226ddde37bbdb8e027&tags=" + term + "&format=json&jsoncallback=?&per_page=20";
 		$.getJSON(url, showFlickrResults)
 		//console.log("flickr search enabled!");
 	} else {
@@ -88,7 +88,12 @@ $("#flickrSearchSubmit").on("click", function() {
 var showFlickrResults = function(info) {
 	//console.log(info);
 	$.each(info.photos.photo, function(index, picture){
-		console.log(index);
+		//console.log(index);
+		var imageSource = "http://farm" + picture.farm + ".static.flickr.com/" + picture.server + "/" + picture.id + "_" + picture.secret + ".jpg";
+		var imageHolder = "<li class='picLinks'><a href=#detailView id=" + imageSource + ">" + "<img src='" + imageSource + "'height=150 width=150> '" + picture.title + "</a></li>";
+		$("#flickr-ul").append(imageHolder);
+		$("#flickr-ul").listview('refresh');
+		console.log(imageSource);
 	});
 };
 //the below code allows me to fire an event listener on the dynamically created anchor tags
