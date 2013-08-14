@@ -7,17 +7,17 @@ var flickrEnabled = false;
 var instagramEnabled = false;
 var fullPhoto = "";
 
-var tag = "cars";
-var url = "https://api.instagram.com/v1/tags/" + tag + "/media/recent?callback=?&amp;client_id=fb8ea4f7741a454e973d50bb434b7bda&amp:min_id=10";
-	$.getJSON(url, testFunction)
 
 });
 
-var testFunction = function(info) {
-	console.log(info);
-	//$.each(info.data)
-};
+$("#instagramSubmit").on("click", function(){
+	var login = "https://instagram.com/oauth/authorize/?client_id=fb8ea4f7741a454e973d50bb434b7bda&redirect_uri=https://127.0.0.1&response_type=token";
+	
+});
 
+var showLogin = function(data) {
+	console.log(data);
+}
 
 $("#serviceChoose").on('change', function(){
 		
@@ -56,21 +56,39 @@ $("#instagramSearchSubmit").on("click", function() {
 	//console.log($("#instagramSearch").val());
 	if(term !== "") {
 		var url = "https://api.instagram.com/v1/tags/" + term + "/media/recent?callback=?&amp;client_id=fb8ea4f7741a454e973d50bb434b7bda&amp:min_id=10";	
-		$.getJSON(url, showInstagramResults)
+		$.ajax({
+			type: 'GET',
+			dataType: "json",
+			url: url,
+			timeout: 2000,
+			error: function() {
+				alert("No images found! Please refine your search...");
+				document.location.reload();
+			},
+			success: function(info) {
+				//console.log(data);
+				$.each(info.data, function(index, photo){
+					if (photo.caption != null) {
+						if (photo.caption.text != null) {
+							var title = photo.caption.text;
+						}
+						} else {
+							var title = "";
+						}
+						var pic = "<li class='picLinks'><a href=#detailView id=" + photo.images.standard_resolution.url + ">" + "<img src='" + photo.images.thumbnail.url + "' > '" + title + "</a></li>";
+						$("#instagram-ul").append(pic);
+						$("#instagram-ul").listview('refresh');
+				});
+			//$.mobile.activePage.trigger("refresh");
+			}
+			
+		});
+
+		//$.getJSON(url, showInstagramResults)
 	} else {
 		alert("Please choose a topic to search!");
 	}
 });
-
-var showInstagramResults = function(info) {
-	console.log(info);
-	$.each(info.data, function(index, photo){
-		var pic = "<li class='picLinks'><a href=#detailView id=" + photo.images.standard_resolution.url + ">" + "<img src='" + photo.images.thumbnail.url + "' > '" + photo.caption.text + "</a></li>";
-		$("#instagram-ul").append(pic);
-		$("#instagram-ul").listview('refresh');
-	});
-	$.mobile.activePage.trigger("refresh");
-};
 
 $("#flickrSearchSubmit").on("click", function() {
 	var term = $("#flickrSearch").val();
@@ -78,24 +96,34 @@ $("#flickrSearchSubmit").on("click", function() {
 	//console.log($("#instagramSearch").val());
 	if(term !== "") {
 		var url = "http://api.flickr.com/services/rest/?&method=flickr.photos.search&api_key=dcd118bdd36ff7226ddde37bbdb8e027&tags=" + term + "&format=json&jsoncallback=?&per_page=20";
-		$.getJSON(url, showFlickrResults)
-		//console.log("flickr search enabled!");
+		$.ajax({
+			type: 'GET',
+			dataType: "json",
+			url: url,
+			timeout: 2000,
+			success: function(info) {
+				//console.log(data);
+				if (info.photos.photo.length == "0") {
+					alert("No images found! Please refine your search...");
+					console.log(info.photos.total);
+				} else {
+					$.each(info.photos.photo, function(index, picture){
+					//console.log(index);
+						var imageSource = "http://farm" + picture.farm + ".static.flickr.com/" + picture.server + "/" + picture.id + "_" + picture.secret + ".jpg";
+						var imageHolder = "<li class='picLinks'><a href=#detailView id=" + imageSource + ">" + "<img src='" + imageSource + "'height=150 width=150> '" + picture.title + "</a></li>";
+						$("#flickr-ul").append(imageHolder);
+						$("#flickr-ul").listview('refresh');
+						//console.log(imageSource);
+					});
+				}
+			}
+			
+		});
 	} else {
 		alert("Please choose a topic to search!");
 	}
 });
 
-var showFlickrResults = function(info) {
-	//console.log(info);
-	$.each(info.photos.photo, function(index, picture){
-		//console.log(index);
-		var imageSource = "http://farm" + picture.farm + ".static.flickr.com/" + picture.server + "/" + picture.id + "_" + picture.secret + ".jpg";
-		var imageHolder = "<li class='picLinks'><a href=#detailView id=" + imageSource + ">" + "<img src='" + imageSource + "'height=150 width=150> '" + picture.title + "</a></li>";
-		$("#flickr-ul").append(imageHolder);
-		$("#flickr-ul").listview('refresh');
-		console.log(imageSource);
-	});
-};
 //the below code allows me to fire an event listener on the dynamically created anchor tags
 $(document.body).on("click", ".picLinks", function(event){
     //fullPhoto = $(this).children("a").attr("id");
