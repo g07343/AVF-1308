@@ -60,25 +60,30 @@ $("#instagramSearchSubmit").on("click", function() {
 			type: 'GET',
 			dataType: "json",
 			url: url,
-			timeout: 2000,
+			timeout: 5000,
 			error: function() {
-				alert("No images found! Please refine your search...");
+				alert("No images found or search parameters were incorrect! Please refine your search...");
 				document.location.reload();
 			},
 			success: function(info) {
 				//console.log(data);
-				$.each(info.data, function(index, photo){
-					if (photo.caption != null) {
-						if (photo.caption.text != null) {
-							var title = photo.caption.text;
-						}
-						} else {
-							var title = "";
-						}
-						var pic = "<li class='picLinks'><a href=#detailView id=" + photo.images.standard_resolution.url + ">" + "<img src='" + photo.images.thumbnail.url + "' > '" + title + "</a></li>";
-						$("#instagram-ul").append(pic);
-						$("#instagram-ul").listview('refresh');
-				});
+				console.log(info);
+				if (info.data.length == "0") {
+					alert("No images found! Please refine your search...");
+				} else {
+					$.each(info.data, function(index, photo){
+						if (photo.caption != null) {
+							if (photo.caption.text != null) {
+								var title = photo.caption.text;
+							}
+							} else {
+								var title = "";
+							}
+							var pic = "<li class='picLinks'><a href=#detailView id=" + photo.images.standard_resolution.url + ">" + "<img src='" + photo.images.thumbnail.url + "' > '" + title + "</a></li>";
+							$("#instagram-ul").append(pic);
+							$("#instagram-ul").listview('refresh');
+					});
+				};	
 			//$.mobile.activePage.trigger("refresh");
 			}
 			
