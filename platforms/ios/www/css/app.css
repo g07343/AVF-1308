@@ -58,4 +58,9 @@ img { max-width: 100%; }
 .ui-grid-a {
   background: #64D9EF;
 }
+
+#localImages {
+  display:inline-block;
+}
+
  

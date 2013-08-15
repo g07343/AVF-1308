@@ -20,7 +20,7 @@ Android index.html file -->
             <header data-role="header" data-theme="a"><img class="center" src="img/logo.png" /></header>
             <section id="previewPane">
                 <!-- Main program launches the device camera immediately, and this is where the camera preview lives...for now just an image placeholder to get the idea across-->
-                <a href="#" data-role="button" id="takePicture">Take Picture</a> 
+                <a href="#" data-role="button" id="takePicture" data-icon="plus">Take Picture</a> 
             </section>
             <section id="toggles">
                 <h4>Upload photos to:</h4>
@@ -49,7 +49,12 @@ Android index.html file -->
         <div data-role="page" id="pictures" data-theme="a" style="background-image: url('img/paper.png')">
             <header data-role="header" data-theme="a"><h1>View your Pictures</h1></header>
                 <section data-role="fieldcontain" id="user-images">
-                    <h1>(user images will appear here eventually...)</h1>
+                    <h1>Local Images:</h1>
+                    <section data-role="ui-grid-b" id="localImages">
+                            <img src="img/imagePlaceholder.png" class="ui-block-a" height='100' width='100' />
+                            <img src="img/imagePlaceholder.png" class="ui-block-b" height='100' width='100' />
+                            <img src="img/imagePlaceholder.png" class="ui-block-c" height='100' width='100' />       
+                    </section>
                 </section>
                 <section id="image-search">
                     <h2>Want to search for images?</h2>

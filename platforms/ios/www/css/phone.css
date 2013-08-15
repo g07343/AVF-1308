@@ -1,0 +1,17 @@
+/*Matthew Lewis
+AVF phone css file
+Term 1308*/
+
+/*below is for older Android (lower-res) phones...*/
+@media only screen and (max-width:480px){
+	body {
+	width:480px;
+	}
+}
+
+/*below is for older iPhone "retina" displays*/
+@media only screen and (max-width:640px){
+	body {
+	width:640px;
+	}
+}
