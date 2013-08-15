@@ -22,24 +22,24 @@ var showLogin = function(data) {
 $("#serviceChoose").on('change', function(){
 		
 		if ($("#serviceChoose").val() == "instagram") {
-			$("#instagramForm").css("display", "block");
-			$("#flickrForm").css("display", "none");
+			$("#instagramForm").slideDown();
+			$("#flickrForm").slideUp();
 		}
 		if ($("#serviceChoose").val() == "flickr") {
-			$("#instagramForm").css("display", "none");
-			$("#flickrForm").css("display", "block");
+			$("#instagramForm").slideUp();
+			$("#flickrForm").slideDown();
 		}
 });
 
 $("#searchChoose").on('change', function(){
 		
 		if ($("#searchChoose").val() == "instagram") {
-			$("#instagramSearchSection").css("display", "block");
-			$("#flickrSearchSection").css("display", "none");
+			$("#flickrSearchSection").slideUp();
+			$("#instagramSearchSection").slideDown();
 		}
 		if ($("#searchChoose").val() == "flickr") {
-			$("#instagramSearchSection").css("display", "none");
-			$("#flickrSearchSection").css("display", "block");
+			$("#instagramSearchSection").slideUp();
+			$("#flickrSearchSection").slideDown();
 		}
 });
 
