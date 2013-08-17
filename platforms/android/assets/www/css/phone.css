@@ -2,16 +2,26 @@
 AVF phone css file
 Term 1308*/
 
-/*below is for older Android (lower-res) phones...*/
-@media only screen and (max-width:480px){
-	body {
-	width:480px;
-	}
-}
 
-/*below is for older iPhone "retina" displays*/
-@media only screen and (max-width:640px){
+
+@media only screen and (max-width: 320px) {
 	body {
-	width:640px;
+		width:100%;
+		height:100%;
 	}
+	section {
+		margin-left:5%;
+		margin-right:5%;
+	}
+	li {
+		display:block;
+		margin-left:25%;
+		padding-left:-80px;
+		padding-bottom:10%;
+	}
+	.label {
+		margin-left:0px;
+		padding-right:50px;
+	}
+
 }
