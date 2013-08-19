@@ -1,6 +1,15 @@
 //Matthew Lewis
 //Advanced Visual Frameworks Term: 1308
-//Android javascript file
+//App Javascript file
+
+document.addEventListener("deviceready", onDeviceReady, false);
+
+
+function onDeviceReady() {
+
+	//all critical event listeners added here so they only fire AFTER device is ready
+	$("#takePicture").on("click", takePicture);
+}
 
 $('#home').on('pageinit', function(){
 var flickrEnabled = false;
@@ -9,6 +18,33 @@ var fullPhoto = "";
 
 
 });
+
+var takePicture = function() {
+	
+	navigator.camera.getPicture(onSuccess, onFail, { quality: 100,
+	    destinationType: Camera.DestinationType.FILE_URI });
+
+	function onSuccess(imageURI) {
+		alert(imageURI);
+		
+	    //var image = "<div data-role='ui-block-" + blockHolder[imageBlock] +"'><img src='" + imageURI + "' width='150' height='150' /></div>";
+	    //alert(image);
+	    //alert(blockHolder.length);
+	    //alert("current block is " + blockHolder[imageBlock]);
+	    var image = "<li class='usrImg'><a href=#popupMenu data-rel='popup' id=" + imageURI + ">" + "<img src='" + imageURI + "' width='150' height='150' /> " +  "Untitled Picture " + imageCount + "</a><section class='renameSection' id='UntitledPicture" + imageCount +"'><h3>Rename picture:</h3><input type='text' id='" + imageURI + "' name='pictureEdit' /><input type='submit' value='Edit' /></section></li>";
+	    //alert(image);
+	    imageCount ++;
+	    $("#localUL").append(image);
+	    $("#localUL").listview('refresh');
+	    };
+	
+
+	function onFail(message) {
+	    alert('Failed because: ' + message);
+	}
+
+
+};
 
 $("#instagramSubmit").on("click", function(){
 	var login = "https://instagram.com/oauth/authorize/?client_id=fb8ea4f7741a454e973d50bb434b7bda&redirect_uri=https://127.0.0.1&response_type=token";
@@ -131,16 +167,47 @@ $("#flickrSearchSubmit").on("click", function() {
 
 //the below code allows me to fire an event listener on the dynamically created anchor tags
 $(document.body).on("click", ".picLinks", function(event){
-    //fullPhoto = $(this).children("a").attr("id");
-    $("#detailView").children("img").remove();
-    event.preventDefault();
-   	fullPhoto = "<img src = " + ($(this).children("div").children("div").children('a').attr("id")) + ">";
-   	//header = '<div data-role="header" data-theme="b" data-add-back-btn="true"><h1>View full size</h1></div>';
-   	$("#detailView").append(fullPhoto);
-   	$.mobile.changePage("#detailView");
+   var title = $(this).children("div").children("div").children('a').attr("id");
+   var object = $(this).children("div").children("div").children('a');
     
+    $("#imageHolder").children("img").remove();
+    event.preventDefault();
+   	var fullPhoto = "<img src = " + ($(this).children("div").children("div").children('a').attr("id")) + ">";
+   	$("#imageHolder").append(fullPhoto);
+   	$.mobile.changePage("#detailView");
+   //add event listener to change title button to allow user to assign a new name
+   
+});
 
+$(document.body).on("click", ".userEditLinks", function(event){
+   alert("current section is " +currentSection);
+   var temp = "#" + currentSection;
+  	$(temp).slideDown();
+  	$("#localUL").listview('refresh');
+   
+});
 
+$(document.body).on("click", ".userPicLinks", function(event){
+   $(".renameSection").slideUp();
+   $("#imageHolder").children("img").remove();
+    event.preventDefault();
+   	var fullPhoto = "<img src = " + currentImage + ">";
+   	$("#imageHolder").append(fullPhoto);
+   	$.mobile.changePage("#detailView");
+   
+});
+
+//the below function sets a global variable everytime the user opens a picture's option menu therefore setting the full screen pic if they want to view it.
+$(document.body).on("click", ".usrImg", function(event){
+	$(".renameSection").slideUp();
+	$("#localUL").listview('refresh');
+   currentImage = $(this).children("div").children("div").children('a').attr("id");
+   currentSection = $(this).children("div").children("div").children('section').attr("id");
+   
 });
 
 
+var imageCount = 0;
+var imageHolder = [$("#localImages")];
+var currentImage;
+var currentSection;

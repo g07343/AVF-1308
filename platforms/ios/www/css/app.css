@@ -28,6 +28,10 @@ h1 {
     text-align:center;
 }
 
+.renameSection {
+  display:none;
+}
+
 #flickrForm {
     display:none;
 }
@@ -59,8 +63,14 @@ img { max-width: 100%; }
   background: #64D9EF;
 }
 
-#localImages {
-  display:inline-block;
+input {
+  display:block;
+}
+
+
+.imageDivs {
+  display: inline;
+  margin-left: 17%;
 }
 
  
