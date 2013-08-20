@@ -1,14 +1,54 @@
 //Matthew Lewis
 //Advanced Visual Frameworks Term: 1308
-//Android javascript file
+//App Javascript file
+
+document.addEventListener("deviceready", onDeviceReady, false);
+
+
+function onDeviceReady() {
+
+	//all critical event listeners added here so they only fire AFTER device is ready
+	$("#takePicture").on("click", takePicture);
+}
 
 $('#home').on('pageinit', function(){
 var flickrEnabled = false;
 var instagramEnabled = false;
 var fullPhoto = "";
 
-
 });
+
+//need to refresh listview for user images EVERY time the page loads or styling isn't correct.
+$('#pictures').on('pageshow', function(){
+	$('#localUL').trigger('create');
+	//$('#localUL').listview('refresh');
+});
+
+var takePicture = function() {
+	
+	navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
+    destinationType: Camera.DestinationType.FILE_URI });
+
+	function onSuccess(imageURI) {
+		alert("Picture Taken!  Tap the 'View' link at the bottom.");
+	    //var image = "<div data-role='ui-block-" + blockHolder[imageBlock] +"'><img src='" + imageURI + "' width='150' height='150' /></div>";
+	    //alert(image);
+	    //alert(blockHolder.length);
+	    //alert("current block is " + blockHolder[imageBlock]);
+	    var image = "<li class='usrImg'><a href=#popupMenu data-rel='popup' id=" + imageURI + ">" + "<img src='" + imageURI + "' width='150' height='150' /> " +  "Untitled Picture " + imageCount + "</a><section class='renameSection' id='UntitledPicture" + imageCount +"'><h3>Rename picture:</h3><input type='text' id='" + imageURI + "' name='pictureEdit' /><a href='#' data-role='button' data-icon='check'>Edit title</a></section></li>";
+	    //alert(image);
+	    imageCount ++;
+	    $("#localUL").append(image);
+	    $("#localUL").listview('refresh');
+	    };
+	
+
+	function onFail(message) {
+	    alert('Failed because: ' + message);
+	}
+
+
+};
 
 $("#instagramSubmit").on("click", function(){
 	var login = "https://instagram.com/oauth/authorize/?client_id=fb8ea4f7741a454e973d50bb434b7bda&redirect_uri=https://127.0.0.1&response_type=token";
@@ -131,16 +171,57 @@ $("#flickrSearchSubmit").on("click", function() {
 
 //the below code allows me to fire an event listener on the dynamically created anchor tags
 $(document.body).on("click", ".picLinks", function(event){
-    //fullPhoto = $(this).children("a").attr("id");
-    $("#detailView").children("img").remove();
-    event.preventDefault();
-   	fullPhoto = "<img src = " + ($(this).children("div").children("div").children('a').attr("id")) + ">";
-   	//header = '<div data-role="header" data-theme="b" data-add-back-btn="true"><h1>View full size</h1></div>';
-   	$("#detailView").append(fullPhoto);
-   	$.mobile.changePage("#detailView");
+   var title = $(this).children("div").children("div").children('a').attr("id");
+   var object = $(this).children("div").children("div").children('a');
     
+    $("#imageHolder").children("img").remove();
+    event.preventDefault();
+   	var fullPhoto = "<img src = " + ($(this).children("div").children("div").children('a').attr("id")) + ">";
+   	$("#imageHolder").append(fullPhoto);
+   	$.mobile.changePage("#detailView");
+   //add event listener to change title button to allow user to assign a new name
+   
+});
+//code to create edit functionality on the popup window's "edit" button, which targets the individual image
+$(document.body).on("click", ".userEditLinks", function(event){
+   //slide up any "edit sections" already open
+   $(".renameSection").slideUp();
+   var temp = "#" + currentSection;
+  	$(temp).slideDown();
+   //close popup
+   $("#popupMenu").popup("close");
+   //add event listener to "edit title" button
+   $(temp).children("a").on("click", function() {
+   		var oldInstance = $(temp).parents('li');
+   		var newTitle = $(temp).find('input').val();
+   		var oldTitle = $(temp).parents('li').children('div').children('div').children('a');
+   		var oldImageSrc = $(temp).parents('li').find('img').attr("src");
+   		var newInstance = $(oldTitle).html("<img src='" + oldImageSrc + "' width='150' height='150' class='ui-li-thumb'>" + newTitle);
+   		$(temp).slideUp();
+   });
+});
 
+$(document.body).on("click", ".userPicLinks", function(event){
+   $(".renameSection").slideUp();
+   $("#imageHolder").children("img").remove();
+    event.preventDefault();
+   	var fullPhoto = "<img src = " + currentImage + ">";
+   	$("#imageHolder").append(fullPhoto);
+   	$.mobile.changePage("#detailView");
+   
+});
 
+//the below function sets a global variable everytime the user opens a picture's option menu therefore setting the full screen pic if they want to view it.
+$(document.body).on("click", ".usrImg", function(event){
+	//$(".renameSection").slideUp();
+	$("#localUL").listview('refresh');
+   currentImage = $(this).children("div").children("div").children('a').attr("id");
+   currentSection = $(this).children("div").children("div").children('section').attr("id");
+   
 });
 
 
+var imageCount = 0;
+var imageHolder = [$("#localImages")];
+var currentImage;
+var currentSection;
