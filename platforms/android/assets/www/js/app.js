@@ -9,6 +9,21 @@ function onDeviceReady() {
 
 	//all critical event listeners added here so they only fire AFTER device is ready
 	$("#takePicture").on("click", takePicture);
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onFileSystemSuccess, fail);
+    
+
+    function onFileSystemSuccess(fileSystem) {
+        alert("Filesystem name is " +fileSystem.name);
+        alert("Root directory name is " +fileSystem.root.name);
+    }
+
+    function fail(evt) {
+        alert(evt.target.error.code);
+    }
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 }
 
 $('#home').on('pageinit', function(){
@@ -25,11 +40,14 @@ $('#pictures').on('pageshow', function(){
 });
 
 var takePicture = function() {
-	
-	navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
-    destinationType: Camera.DestinationType.FILE_URI });
+	//create variable to allow user to set image quality
+	var qual = $("#qualitySlider").val();
+	//call native camera to take picture
+	navigator.camera.getPicture(onSuccess, onFail, { quality: qual,
+	    destinationType: Camera.DestinationType.FILE_URI });
 
 	function onSuccess(imageURI) {
+		alert(imageURI);
 		alert("Picture Taken!  Tap the 'View' link at the bottom.");
 	    //var image = "<div data-role='ui-block-" + blockHolder[imageBlock] +"'><img src='" + imageURI + "' width='150' height='150' /></div>";
 	    //alert(image);
@@ -184,6 +202,7 @@ $(document.body).on("click", ".picLinks", function(event){
 });
 //code to create edit functionality on the popup window's "edit" button, which targets the individual image
 $(document.body).on("click", ".userEditLinks", function(event){
+   event.preventDefault();
    //slide up any "edit sections" already open
    $(".renameSection").slideUp();
    var temp = "#" + currentSection;
@@ -199,6 +218,49 @@ $(document.body).on("click", ".userEditLinks", function(event){
    		var newInstance = $(oldTitle).html("<img src='" + oldImageSrc + "' width='150' height='150' class='ui-li-thumb'>" + newTitle);
    		$(temp).slideUp();
    });
+});
+
+//listener function that allows a user to delete an image taken (which really just removes it's instance from the 'viewable' document making it inaccessible).
+$(document.body).on("click", ".userDeleteLinks", function(event) {
+	var selected = "#" + currentSection;
+	var selectedTitle = $(selected).parents('li').children('div').children('div').children('a').text();
+	var deleteLi = $(selected).parents('li');
+	confirm("Are you sure you want to delete the image: " + selectedTitle + "?  This cannot be undone!");
+	if(confirm) {
+		var location = currentImage.substring(7);
+		$(currentLi).remove();
+		//the below code is responsible for deleting locally stored files on Android, since it automatically saves them to a cache folder on the device
+		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
+		function gotFS(fileSystem){
+			alert(fileSystem.name);
+			alert("Function is looking for: " +location);
+			fileSystem.root.getFile(location, {create: false, exclusive: false}, success, fail);
+		}
+		
+		function success(file){
+			alert("deleted file is: "+ file);
+			//alert(file.name);
+			file.remove(removeSuccess, removeFail);
+		}
+
+		function fail(error) {
+			alert("Couldn't get access to filesystem because: " +error.code);
+		}
+
+		function removeSuccess(entry) {
+			alert("Picture deleted!");
+		}
+		function removeFail(error) {
+			alert("File was ultimately not removed because: " + error);
+		}
+
+		$('#localUL').trigger('create');
+		$('#localUL').listview('refresh');
+		$("#popupMenu").popup("close");
+	} else {
+		alert("File Saved!");
+	};
+
 });
 
 $(document.body).on("click", ".userPicLinks", function(event){
@@ -217,7 +279,7 @@ $(document.body).on("click", ".usrImg", function(event){
 	$("#localUL").listview('refresh');
    currentImage = $(this).children("div").children("div").children('a').attr("id");
    currentSection = $(this).children("div").children("div").children('section').attr("id");
-   
+   currentLi = $(this);
 });
 
 
@@ -225,3 +287,4 @@ var imageCount = 0;
 var imageHolder = [$("#localImages")];
 var currentImage;
 var currentSection;
+var currentLi;

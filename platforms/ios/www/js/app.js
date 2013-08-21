@@ -9,6 +9,21 @@ function onDeviceReady() {
 
 	//all critical event listeners added here so they only fire AFTER device is ready
 	$("#takePicture").on("click", takePicture);
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onFileSystemSuccess, fail);
+    
+
+    function onFileSystemSuccess(fileSystem) {
+        alert("Filesystem name is " +fileSystem.name);
+        alert("Root directory name is " +fileSystem.root.name);
+    }
+
+    function fail(evt) {
+        alert(evt.target.error.code);
+    }
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 }
 
 $('#home').on('pageinit', function(){
@@ -32,7 +47,9 @@ var takePicture = function() {
 	    destinationType: Camera.DestinationType.FILE_URI });
 
 	function onSuccess(imageURI) {
+		alert(imageURI);
 		alert("Picture Taken!  Tap the 'View' link at the bottom.");
+		alert(imageURI);
 	    //var image = "<div data-role='ui-block-" + blockHolder[imageBlock] +"'><img src='" + imageURI + "' width='150' height='150' /></div>";
 	    //alert(image);
 	    //alert(blockHolder.length);

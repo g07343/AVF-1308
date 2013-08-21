@@ -45,6 +45,8 @@
 		A161C48B78244B068523FF22 /* CDVCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = D4A3E96F59C44658B2089FAF /* CDVCamera.m */; };
 		D4A0D8761607E02300AEF8BB /* Default-568h@2x~iphone.png in Resources */ = {isa = PBXBuildFile; fileRef = D4A0D8751607E02300AEF8BB /* Default-568h@2x~iphone.png */; };
 		F840E1F1165FE0F500CFE078 /* config.xml in Resources */ = {isa = PBXBuildFile; fileRef = F840E1F0165FE0F500CFE078 /* config.xml */; };
+		1091B36254F44FF1B12B2FD2 /* CDVFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FF0F8212281451E83807961 /* CDVFile.m */; };
+		3BA6F89760574112BC529B98 /* CDVFileTransfer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6CEAA311673B4FABA36EB163 /* CDVFileTransfer.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -115,6 +117,10 @@
 		D4A0D8751607E02300AEF8BB /* Default-568h@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x~iphone.png"; sourceTree = "<group>"; };
 		D4A3E96F59C44658B2089FAF /* CDVCamera.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDVCamera.m; path = org.apache.cordova.core.camera/CDVCamera.m; sourceTree = "<group>"; };
 		F840E1F0165FE0F500CFE078 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = config.xml; path = Demo/config.xml; sourceTree = "<group>"; };
+		4FF0F8212281451E83807961 /* CDVFile.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVFile.m"; path = "org.apache.cordova.core.file/CDVFile.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		4622103867AB476D8A0497D7 /* CDVFile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVFile.h"; path = "org.apache.cordova.core.file/CDVFile.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		6CEAA311673B4FABA36EB163 /* CDVFileTransfer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVFileTransfer.m"; path = "org.apache.cordova.core.file-transfer/CDVFileTransfer.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		85230BA022264AD5BEF99270 /* CDVFileTransfer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVFileTransfer.h"; path = "org.apache.cordova.core.file-transfer/CDVFileTransfer.h"; sourceTree = "<group>"; fileEncoding = 4; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -265,6 +271,10 @@
 				B5A83445CB0C42328D800369 /* CDVCamera.h */,
 				48EB68EA83464280AFCBD6F4 /* CDVJpegHeaderWriter.h */,
 				226F2B3E9DE240E89E1C426F /* CDVExif.h */,
+				4FF0F8212281451E83807961 /* CDVFile.m */,
+				4622103867AB476D8A0497D7 /* CDVFile.h */,
+				6CEAA311673B4FABA36EB163 /* CDVFileTransfer.m */,
+				85230BA022264AD5BEF99270 /* CDVFileTransfer.h */,
 			);
 			name = Plugins;
 			path = Demo/Plugins;
@@ -434,6 +444,8 @@
 				302D95F114D2391D003F00A1 /* MainViewController.m in Sources */,
 				A161C48B78244B068523FF22 /* CDVCamera.m in Sources */,
 				81F6E2C512AA4D85B2DE62BC /* CDVJpegHeaderWriter.m in Sources */,
+				1091B36254F44FF1B12B2FD2 /* CDVFile.m in Sources */,
+				3BA6F89760574112BC529B98 /* CDVFileTransfer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
