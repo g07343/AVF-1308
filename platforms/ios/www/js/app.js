@@ -9,9 +9,8 @@ function onDeviceReady() {
 
 	//all critical event listeners added here so they only fire AFTER device is ready
 	$("#takePicture").on("click", takePicture);
+	$("#geoCheck").on('click', geoLock);
 	
-
-
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onFileSystemSuccess, fail);
     
@@ -123,6 +122,35 @@ $("#takePicture").on("click", function() {
 });
 
 $("#instagramSearchSubmit").on("click", function() {
+	navigator.geolocation.getCurrentPosition(onSuccess, onError);
+		function onSuccess(position){
+			// alert(' Your latitude is : '    + position.coords.latitude          + '\n' +
+   //      	' Your longitude is: '         + position.coords.longitude         + '\n');
+		var currentLatitude = position.coords.latitude.toFixed(2);
+		var currentLongitude = position.coords.longitude.toFixed(2);
+		
+		alert("Your current lat is: " + currentLatitude + "and saved lat is: " + homeLatitude);
+		alert("Your current long is: " + currentLongitude + "and saved long is: " + homeLongitude);
+		if (currentLatitude != homeLatitude || currentLongitude != homeLongitude){
+				internetBlock = "on";
+				alert("Internet block is activated!");
+				$("#networkError").slideDown();
+			}else{
+				internetBlock = "off"
+				instaSearch();
+			}
+		};
+		
+		function onError(error) {
+			alert("Could not get position because: " +error);
+		}
+});
+
+
+
+
+var instaSearch = function() {		
+
 	var networkState = navigator.connection.type;
 
             var states = {};
@@ -185,9 +213,38 @@ $("#instagramSearchSubmit").on("click", function() {
 					alert("Please choose a topic to search!");
 				}
 	};
-});
+};
 
 $("#flickrSearchSubmit").on("click", function() {
+	navigator.geolocation.getCurrentPosition(onSuccess, onError);
+		function onSuccess(position){
+			// alert(' Your latitude is : '    + position.coords.latitude          + '\n' +
+   //      	' Your longitude is: '         + position.coords.longitude         + '\n');
+		var currentLatitude = position.coords.latitude.toFixed(2);
+		var currentLongitude = position.coords.longitude.toFixed(2);
+		alert("Your current lat is: " + currentLatitude + "and saved lat is: " + homeLatitude);
+		alert("Your current long is: " + currentLongitude + "and saved long is: " + homeLongitude);
+
+		if (currentLatitude != homeLatitude || currentLongitude != homeLongitude){
+				internetBlock = "on";
+				alert("Internet block is activated!");
+				$("#networkError").slideDown();
+			}else{
+				internetBlock = "off"
+				flickrSearch();
+			}
+		};
+		
+		function onError(error) {
+			alert("Could not get position because: " +error);
+		}
+
+});
+
+
+
+
+var flickrSearch = function() {
 	var networkState = navigator.connection.type;
 
             var states = {};
@@ -239,7 +296,7 @@ $("#flickrSearchSubmit").on("click", function() {
 					alert("Please choose a topic to search!");
 				}
 };
-});
+};
 
 //the below code allows me to fire an event listener on the dynamically created anchor tags
 $(document.body).on("click", ".picLinks", function(event){
@@ -311,9 +368,36 @@ $(document.body).on("click", ".usrImg", function(event){
    currentLi = $(this);
 });
 
+var geoLock = function() {
+	if($("#geoCheck").is(':checked')){
+		//alert("Geo Lock ON!");
+		navigator.geolocation.getCurrentPosition(onSuccess, onError);
+		function onSuccess(position){
+			alert(' Your latitude is : '    + position.coords.latitude          + '\n' +
+        	' Your longitude is: '         + position.coords.longitude         + '\n');
+		homeLatitude = position.coords.latitude.toFixed(2);
+		homeLongitude = position.coords.longitude.toFixed(2);
+		beginWatch();
+		}
+		function onError(error){
+			alert(error);
+		}
+	} else {
+		internetBlock = 'off';
+		alert("Geo Lock OFF");
+		navigator.geolocation.clearWatch(watchId);
+	}
+};
+
+
+
 
 var imageCount = 0;
 var imageHolder = [$("#localImages")];
 var currentImage;
 var currentSection;
 var currentLi;
+var homeLatitude;
+var homeLongitude;
+var internetBlock = "off";
+var watchId;

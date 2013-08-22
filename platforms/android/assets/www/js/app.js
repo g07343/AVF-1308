@@ -288,7 +288,6 @@ var geoLock = function() {
         	' Your longitude is: '         + position.coords.longitude         + '\n');
 		homeLatitude = position.coords.latitude.toFixed(2);
 		homeLongitude = position.coords.longitude.toFixed(2);
-		beginWatch();
 		}
 		function onError(error){
 			alert(error);
@@ -299,29 +298,6 @@ var geoLock = function() {
 		navigator.geolocation.clearWatch(watchId);
 	}
 };
-//in theory the below function sets the global variable 'internetBlock' to 'on' in the event the user gets too far from home.  I just have a poor understanding of latitude and longitude. 
-//pretty sure each 'point' of lat is 60 miles or so, so .01 would be around .6 
-var beginWatch = function(){
-	watchId = navigator.geolocation.watchPosition(onSuccess, onError, {maximumAge: 15000, timeout: 30000 });
-	function onSuccess(position){
-		var currentLatitude = position.latitude.toFixed(2);
-		var currentLongitude = position.longitude.toFixed(2);
-		if (currentLatitude != homeLatitude || currentLongitude != homeLongitude) {
-			internetBlock = 'on';
-			alert("internet block enabled!");
-		} else {
-			internetBlock = 'off';
-			alert("internet block is off because you are home");
-		}
-	}
-	function onError(error){
-		//alert("Cannot retrieve location because " + error);
-		 alert('code: '    + error.code    + '\n' +
-          'message: ' + error.message + '\n');
-
-	}
-
-}
 
 //the below code allows me to fire an event listener on the dynamically created anchor tags (allows the popup dialog boxes on the image buttons)
 $(document.body).on("click", ".picLinks", function(event){
