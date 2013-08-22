@@ -9,20 +9,17 @@ function onDeviceReady() {
 
 	//all critical event listeners added here so they only fire AFTER device is ready
 	$("#takePicture").on("click", takePicture);
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onFileSystemSuccess, fail);
-    
+	
 
     function onFileSystemSuccess(fileSystem) {
-        alert("Filesystem name is " +fileSystem.name);
-        alert("Root directory name is " +fileSystem.root.name);
+        //alert("Filesystem name is " +fileSystem.name);
+       // alert("Root directory name is " +fileSystem.root.name);
     }
 
     function fail(evt) {
-        alert(evt.target.error.code);
+        //alert(evt.target.error.code);
     }
-
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 }
 
@@ -109,51 +106,89 @@ $("#takePicture").on("click", function() {
 });
 
 $("#instagramSearchSubmit").on("click", function() {
-	var term = $("#instagramSearch").val();
-	$("#instagram-ul").empty();
-	//console.log($("#instagramSearch").val());
-	if(term !== "") {
-		var url = "https://api.instagram.com/v1/tags/" + term + "/media/recent?callback=?&amp;client_id=fb8ea4f7741a454e973d50bb434b7bda&amp:min_id=10";	
-		$.ajax({
-			type: 'GET',
-			dataType: "json",
-			url: url,
-			timeout: 5000,
-			error: function() {
-				alert("No images found or search parameters were incorrect! Please refine your search...");
-				document.location.reload();
-			},
-			success: function(info) {
-				//console.log(data);
-				console.log(info);
-				if (info.data.length == "0") {
-					alert("No images found! Please refine your search...");
-				} else {
-					$.each(info.data, function(index, photo){
-						if (photo.caption != null) {
-							if (photo.caption.text != null) {
-								var title = photo.caption.text;
-							}
-							} else {
-								var title = "";
-							}
-							var pic = "<li class='picLinks'><a href=#detailView id=" + photo.images.standard_resolution.url + ">" + "<img src='" + photo.images.thumbnail.url + "' > '" + title + "</a></li>";
-							$("#instagram-ul").append(pic);
-							$("#instagram-ul").listview('refresh');
-					});
-				};	
-			//$.mobile.activePage.trigger("refresh");
-			}
-			
-		});
+	var networkState = navigator.connection.type;
 
-		//$.getJSON(url, showInstagramResults)
-	} else {
-		alert("Please choose a topic to search!");
-	}
+            var states = {};
+            states[Connection.UNKNOWN]  = 'Unknown connection';
+            states[Connection.ETHERNET] = 'Ethernet connection';
+            states[Connection.WIFI]     = 'WiFi connection';
+            states[Connection.CELL_2G]  = 'Cell 2G connection';
+            states[Connection.CELL_3G]  = 'Cell 3G connection';
+            states[Connection.CELL_4G]  = 'Cell 4G connection';
+            states[Connection.CELL]     = 'Cell generic connection';
+            states[Connection.NONE]     = 'No network connection';
+
+            alert('Connection type: ' + states[networkState]);
+
+           	//run code to ensure the device has an internet connection before allowing a search!!!
+           	if (states[networkState] == 'No network connection') {
+           		alert("You must be connected to the internet to Search!  Turn on WIFI or cellular connection!");
+           	} else {
+				var term = $("#instagramSearch").val();
+				$("#instagram-ul").empty();
+				//console.log($("#instagramSearch").val());
+				if(term !== "") {
+					var url = "https://api.instagram.com/v1/tags/" + term + "/media/recent?callback=?&amp;client_id=fb8ea4f7741a454e973d50bb434b7bda&amp:min_id=10";	
+					$.ajax({
+						type: 'GET',
+						dataType: "json",
+						url: url,
+						timeout: 5000,
+						error: function() {
+							alert("No images found or search parameters were incorrect! Please refine your search...");
+							document.location.reload();
+						},
+						success: function(info) {
+							//console.log(data);
+							console.log(info);
+							if (info.data.length == "0") {
+								alert("No images found! Please refine your search...");
+							} else {
+								$.each(info.data, function(index, photo){
+									if (photo.caption != null) {
+										if (photo.caption.text != null) {
+											var title = photo.caption.text;
+										}
+										} else {
+											var title = "";
+										}
+										var pic = "<li class='picLinks'><a href=#detailView id=" + photo.images.standard_resolution.url + ">" + "<img src='" + photo.images.thumbnail.url + "' > '" + title + "</a></li>";
+										$("#instagram-ul").append(pic);
+										$("#instagram-ul").listview('refresh');
+								});
+							};	
+						//$.mobile.activePage.trigger("refresh");
+						}
+						
+					});
+
+					//$.getJSON(url, showInstagramResults)
+				} else {
+					alert("Please choose a topic to search!");
+				}
+			};
 });
 
 $("#flickrSearchSubmit").on("click", function() {
+	var networkState = navigator.connection.type;
+
+            var states = {};
+            states[Connection.UNKNOWN]  = 'Unknown connection';
+            states[Connection.ETHERNET] = 'Ethernet connection';
+            states[Connection.WIFI]     = 'WiFi connection';
+            states[Connection.CELL_2G]  = 'Cell 2G connection';
+            states[Connection.CELL_3G]  = 'Cell 3G connection';
+            states[Connection.CELL_4G]  = 'Cell 4G connection';
+            states[Connection.CELL]     = 'Cell generic connection';
+            states[Connection.NONE]     = 'No network connection';
+
+            alert('Connection type: ' + states[networkState]);
+
+
+
+
+
+
 	var term = $("#flickrSearch").val();
 	$("#flickr-ul").empty();
 	//console.log($("#instagramSearch").val());
@@ -225,8 +260,8 @@ $(document.body).on("click", ".userDeleteLinks", function(event) {
 	var selected = "#" + currentSection;
 	var selectedTitle = $(selected).parents('li').children('div').children('div').children('a').text();
 	var deleteLi = $(selected).parents('li');
-	confirm("Are you sure you want to delete the image: " + selectedTitle + "?  This cannot be undone!");
-	if(confirm) {
+	//confirm("Are you sure you want to delete the image: " + selectedTitle + "?  This cannot be undone!");
+	if(confirm("Are you sure you want to delete the image: " + selectedTitle + "?  This cannot be undone!")) {
 		var location = currentImage.substring(7);
 		$(currentLi).remove();
 		//the below code is responsible for deleting locally stored files on Android, since it automatically saves them to a cache folder on the device

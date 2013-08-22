@@ -14,15 +14,15 @@ function onDeviceReady() {
     
 
     function onFileSystemSuccess(fileSystem) {
-        alert("Filesystem name is " +fileSystem.name);
-        alert("Root directory name is " +fileSystem.root.name);
+         alert("Filesystem name is " +fileSystem.name);
+        // alert("Root directory name is " +fileSystem.root.name);
     }
 
     function fail(evt) {
-        alert(evt.target.error.code);
+        //alert(evt.target.error.code);
     }
 
-	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 
 }
 
@@ -47,9 +47,19 @@ var takePicture = function() {
 	    destinationType: Camera.DestinationType.FILE_URI });
 
 	function onSuccess(imageURI) {
-		alert(imageURI);
-		alert("Picture Taken!  Tap the 'View' link at the bottom.");
-		alert(imageURI);
+		//alert(imageURI);
+		alert("Picture Taken!  Tap the 'View' link at the bottom."); 
+		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onFileSystemSuccess, fail);
+			function onFileSystemSuccess(fileSystem){
+				alert("File retrieved was "+ fileSystem);
+				alert(fileSystem);
+			};
+
+			function fail(error) {
+				alert("Couldn't get access to filesystem because: " +error.code);
+			};
+		//alert("Image location on device is: " +imageURI);
+		 //var savePic = confirm('Would you like to save this picture to your device?  Unsaved pictures will be lost after closing SimpleShare!');
 	    //var image = "<div data-role='ui-block-" + blockHolder[imageBlock] +"'><img src='" + imageURI + "' width='150' height='150' /></div>";
 	    //alert(image);
 	    //alert(blockHolder.length);
@@ -59,7 +69,7 @@ var takePicture = function() {
 	    imageCount ++;
 	    $("#localUL").append(image);
 	    $("#localUL").listview('refresh');
-	    };
+	};
 	
 
 	function onFail(message) {
@@ -227,11 +237,14 @@ $(document.body).on("click", ".userDeleteLinks", function(event) {
 	var selectedTitle = $(selected).parents('li').children('div').children('div').children('a').text();
 	var deleteLi = $(selected).parents('li');
 	confirm("Are you sure you want to delete the image: " + selectedTitle + "?  This cannot be undone!");
-	if(confirm) {
+	if(confirm == true) {
 		$(currentLi).remove();
 		$('#localUL').trigger('create');
 		$('#localUL').listview('refresh');
 		$("#popupMenu").popup("close");
+	} else {
+		$("#popupMenu").popup("close");
+		alert("Image saved");
 	};
 
 });
