@@ -64,6 +64,9 @@ Android index.html file -->
                 </section>
                 <section id="image-search">
                     <h2>Want to search for images?</h2>
+                    <section id="networkError">
+                        <h3 class="errorText">Uh Oh!  Looks like you don't have a network connection currently!  In order to search, please enable one, and try again!</h3>
+                    </section>
                     <fieldset data-role="controlgroup" data-type="horizontal" style="display: inline">
                         <select id="searchChoose" name="searchChoose" data-native-menu="false">
                             <option data-placeholder="true" id="searchPlaceholder"value>Select a photo sharing service to search</option>
@@ -75,9 +78,6 @@ Android index.html file -->
                 <section data-role="content" id="instagramSearchSection">
                     <label for="instagramSearch">Search Instagram (Single word tag labels only)</label>
                     <input type="text" id="instagramSearch" name="instagramSearch" />
-                    <section class="networkError">
-                        <h3>Uh Oh!  Looks like you don't have a network connection currently!  In order to search, please enable one, and try again!</h3>
-                    </section>
                     <input type="submit" id="instagramSearchSubmit" name="instagramSearchSubmit" value="Search"/>
                     <section data-role="content" id="instagramResults">
                         <ul id="instagram-ul" data-role="listview" data-inset="true">

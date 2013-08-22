@@ -73,4 +73,10 @@ input {
   margin-left: 17%;
 }
 
- 
+#networkError {
+  display: none;
+}
+
+.errorText {
+  color:red;
+} 

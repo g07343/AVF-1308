@@ -120,82 +120,122 @@ $("#takePicture").on("click", function() {
 });
 
 $("#instagramSearchSubmit").on("click", function() {
-	var term = $("#instagramSearch").val();
-	$("#instagram-ul").empty();
-	//console.log($("#instagramSearch").val());
-	if(term !== "") {
-		var url = "https://api.instagram.com/v1/tags/" + term + "/media/recent?callback=?&amp;client_id=fb8ea4f7741a454e973d50bb434b7bda&amp:min_id=10";	
-		$.ajax({
-			type: 'GET',
-			dataType: "json",
-			url: url,
-			timeout: 5000,
-			error: function() {
-				alert("No images found or search parameters were incorrect! Please refine your search...");
-				document.location.reload();
-			},
-			success: function(info) {
-				//console.log(data);
-				console.log(info);
-				if (info.data.length == "0") {
-					alert("No images found! Please refine your search...");
-				} else {
-					$.each(info.data, function(index, photo){
-						if (photo.caption != null) {
-							if (photo.caption.text != null) {
-								var title = photo.caption.text;
-							}
-							} else {
-								var title = "";
-							}
-							var pic = "<li class='picLinks'><a href=#detailView id=" + photo.images.standard_resolution.url + ">" + "<img src='" + photo.images.thumbnail.url + "' > '" + title + "</a></li>";
-							$("#instagram-ul").append(pic);
-							$("#instagram-ul").listview('refresh');
-					});
-				};	
-			//$.mobile.activePage.trigger("refresh");
-			}
-			
-		});
+	var networkState = navigator.connection.type;
 
-		//$.getJSON(url, showInstagramResults)
-	} else {
-		alert("Please choose a topic to search!");
-	}
+            var states = {};
+            states[Connection.UNKNOWN]  = 'Unknown connection';
+            states[Connection.ETHERNET] = 'Ethernet connection';
+            states[Connection.WIFI]     = 'WiFi connection';
+            states[Connection.CELL_2G]  = 'Cell 2G connection';
+            states[Connection.CELL_3G]  = 'Cell 3G connection';
+            states[Connection.CELL_4G]  = 'Cell 4G connection';
+            states[Connection.CELL]     = 'Cell generic connection';
+            states[Connection.NONE]     = 'No network connection';
+
+            
+
+            //same code as above...checks for internet connection before doing a search and provides feedback to the user if necessary
+            if (states[networkState] == 'No network connection') {
+           		$("#networkError").slideDown();
+           	} else {
+           		$("#networkError").slideUp();
+				var term = $("#instagramSearch").val();
+				$("#instagram-ul").empty();
+				//console.log($("#instagramSearch").val());
+				if(term !== "") {
+					var url = "https://api.instagram.com/v1/tags/" + term + "/media/recent?callback=?&amp;client_id=fb8ea4f7741a454e973d50bb434b7bda&amp:min_id=10";	
+					$.ajax({
+						type: 'GET',
+						dataType: "json",
+						url: url,
+						timeout: 5000,
+						error: function() {
+							alert("No images found or search parameters were incorrect! Please refine your search...");
+							document.location.reload();
+						},
+						success: function(info) {
+							//console.log(data);
+							console.log(info);
+							if (info.data.length == "0") {
+								alert("No images found! Please refine your search...");
+							} else {
+								$.each(info.data, function(index, photo){
+									if (photo.caption != null) {
+										if (photo.caption.text != null) {
+											var title = photo.caption.text;
+										}
+										} else {
+											var title = "";
+										}
+										var pic = "<li class='picLinks'><a href=#detailView id=" + photo.images.standard_resolution.url + ">" + "<img src='" + photo.images.thumbnail.url + "' > '" + title + "</a></li>";
+										$("#instagram-ul").append(pic);
+										$("#instagram-ul").listview('refresh');
+								});
+							};	
+						//$.mobile.activePage.trigger("refresh");
+						}
+						
+					});
+
+					//$.getJSON(url, showInstagramResults)
+				} else {
+					alert("Please choose a topic to search!");
+				}
+	};
 });
 
 $("#flickrSearchSubmit").on("click", function() {
-	var term = $("#flickrSearch").val();
-	$("#flickr-ul").empty();
-	//console.log($("#instagramSearch").val());
-	if(term !== "") {
-		var url = "http://api.flickr.com/services/rest/?&method=flickr.photos.search&api_key=dcd118bdd36ff7226ddde37bbdb8e027&tags=" + term + "&format=json&jsoncallback=?&per_page=20";
-		$.ajax({
-			type: 'GET',
-			dataType: "json",
-			url: url,
-			timeout: 2000,
-			success: function(info) {
-				//console.log(data);
-				if (info.photos.photo.length == "0") {
-					alert("No images found! Please refine your search...");
-					console.log(info.photos.total);
-				} else {
-					$.each(info.photos.photo, function(index, picture){
-					//console.log(index);
-						var imageSource = "http://farm" + picture.farm + ".static.flickr.com/" + picture.server + "/" + picture.id + "_" + picture.secret + ".jpg";
-						var imageHolder = "<li class='picLinks'><a href=#detailView id=" + imageSource + ">" + "<img src='" + imageSource + "'height=150 width=150> '" + picture.title + "</a></li>";
-						$("#flickr-ul").append(imageHolder);
-						$("#flickr-ul").listview('refresh');
-						//console.log(imageSource);
+	var networkState = navigator.connection.type;
+
+            var states = {};
+            states[Connection.UNKNOWN]  = 'Unknown connection';
+            states[Connection.ETHERNET] = 'Ethernet connection';
+            states[Connection.WIFI]     = 'WiFi connection';
+            states[Connection.CELL_2G]  = 'Cell 2G connection';
+            states[Connection.CELL_3G]  = 'Cell 3G connection';
+            states[Connection.CELL_4G]  = 'Cell 4G connection';
+            states[Connection.CELL]     = 'Cell generic connection';
+            states[Connection.NONE]     = 'No network connection';
+
+            
+
+            //same code as above...checks for internet connection before doing a search and provides feedback to the user if necessary
+            if (states[networkState] == 'No network connection') {
+           		$("#networkError").slideDown();
+           	} else {
+           		$("#networkError").slideUp();
+				var term = $("#flickrSearch").val();
+				$("#flickr-ul").empty();
+				//console.log($("#instagramSearch").val());
+				if(term !== "") {
+					var url = "http://api.flickr.com/services/rest/?&method=flickr.photos.search&api_key=dcd118bdd36ff7226ddde37bbdb8e027&tags=" + term + "&format=json&jsoncallback=?&per_page=20";
+					$.ajax({
+						type: 'GET',
+						dataType: "json",
+						url: url,
+						timeout: 2000,
+						success: function(info) {
+							//console.log(data);
+							if (info.photos.photo.length == "0") {
+								alert("No images found! Please refine your search...");
+								console.log(info.photos.total);
+							} else {
+								$.each(info.photos.photo, function(index, picture){
+								//console.log(index);
+									var imageSource = "http://farm" + picture.farm + ".static.flickr.com/" + picture.server + "/" + picture.id + "_" + picture.secret + ".jpg";
+									var imageHolder = "<li class='picLinks'><a href=#detailView id=" + imageSource + ">" + "<img src='" + imageSource + "'height=150 width=150> '" + picture.title + "</a></li>";
+									$("#flickr-ul").append(imageHolder);
+									$("#flickr-ul").listview('refresh');
+									//console.log(imageSource);
+								});
+							}
+						}
+						
 					});
+				} else {
+					alert("Please choose a topic to search!");
 				}
-			}
-			
-		});
-	} else {
-		alert("Please choose a topic to search!");
-	}
+};
 });
 
 //the below code allows me to fire an event listener on the dynamically created anchor tags

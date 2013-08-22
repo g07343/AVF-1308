@@ -118,12 +118,13 @@ $("#instagramSearchSubmit").on("click", function() {
             states[Connection.CELL]     = 'Cell generic connection';
             states[Connection.NONE]     = 'No network connection';
 
-            alert('Connection type: ' + states[networkState]);
+           
 
            	//run code to ensure the device has an internet connection before allowing a search!!!
            	if (states[networkState] == 'No network connection') {
-           		alert("You must be connected to the internet to Search!  Turn on WIFI or cellular connection!");
+           		$("#networkError").slideDown();
            	} else {
+           		$("#networkError").slideUp();
 				var term = $("#instagramSearch").val();
 				$("#instagram-ul").empty();
 				//console.log($("#instagramSearch").val());
@@ -182,44 +183,45 @@ $("#flickrSearchSubmit").on("click", function() {
             states[Connection.CELL]     = 'Cell generic connection';
             states[Connection.NONE]     = 'No network connection';
 
-            alert('Connection type: ' + states[networkState]);
+            
 
-
-
-
-
-
-	var term = $("#flickrSearch").val();
-	$("#flickr-ul").empty();
-	//console.log($("#instagramSearch").val());
-	if(term !== "") {
-		var url = "http://api.flickr.com/services/rest/?&method=flickr.photos.search&api_key=dcd118bdd36ff7226ddde37bbdb8e027&tags=" + term + "&format=json&jsoncallback=?&per_page=20";
-		$.ajax({
-			type: 'GET',
-			dataType: "json",
-			url: url,
-			timeout: 2000,
-			success: function(info) {
-				//console.log(data);
-				if (info.photos.photo.length == "0") {
-					alert("No images found! Please refine your search...");
-					console.log(info.photos.total);
-				} else {
-					$.each(info.photos.photo, function(index, picture){
-					//console.log(index);
-						var imageSource = "http://farm" + picture.farm + ".static.flickr.com/" + picture.server + "/" + picture.id + "_" + picture.secret + ".jpg";
-						var imageHolder = "<li class='picLinks'><a href=#detailView id=" + imageSource + ">" + "<img src='" + imageSource + "'height=150 width=150> '" + picture.title + "</a></li>";
-						$("#flickr-ul").append(imageHolder);
-						$("#flickr-ul").listview('refresh');
-						//console.log(imageSource);
+            //same code as above...checks for internet connection before doing a search and provides feedback to the user if necessary
+            if (states[networkState] == 'No network connection') {
+           		$("#networkError").slideDown();
+           	} else {
+           		$("#networkError").slideUp();
+				var term = $("#flickrSearch").val();
+				$("#flickr-ul").empty();
+				//console.log($("#instagramSearch").val());
+				if(term !== "") {
+					var url = "http://api.flickr.com/services/rest/?&method=flickr.photos.search&api_key=dcd118bdd36ff7226ddde37bbdb8e027&tags=" + term + "&format=json&jsoncallback=?&per_page=20";
+					$.ajax({
+						type: 'GET',
+						dataType: "json",
+						url: url,
+						timeout: 2000,
+						success: function(info) {
+							//console.log(data);
+							if (info.photos.photo.length == "0") {
+								alert("No images found! Please refine your search...");
+								console.log(info.photos.total);
+							} else {
+								$.each(info.photos.photo, function(index, picture){
+								//console.log(index);
+									var imageSource = "http://farm" + picture.farm + ".static.flickr.com/" + picture.server + "/" + picture.id + "_" + picture.secret + ".jpg";
+									var imageHolder = "<li class='picLinks'><a href=#detailView id=" + imageSource + ">" + "<img src='" + imageSource + "'height=150 width=150> '" + picture.title + "</a></li>";
+									$("#flickr-ul").append(imageHolder);
+									$("#flickr-ul").listview('refresh');
+									//console.log(imageSource);
+								});
+							}
+						}
+						
 					});
+				} else {
+					alert("Please choose a topic to search!");
 				}
-			}
-			
-		});
-	} else {
-		alert("Please choose a topic to search!");
-	}
+			};
 });
 
 //the below code allows me to fire an event listener on the dynamically created anchor tags
