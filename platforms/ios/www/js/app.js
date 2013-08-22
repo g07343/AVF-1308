@@ -19,7 +19,7 @@ function onDeviceReady() {
     }
 
     function fail(evt) {
-        //alert(evt.target.error.code);
+        alert(evt.target.error.code);
     }
 
 	
