@@ -9,18 +9,21 @@ function onDeviceReady() {
 
 	//all critical event listeners added here so they only fire AFTER device is ready
 	$("#takePicture").on("click", takePicture);
+	
+
+
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onFileSystemSuccess, fail);
+	//window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onFileSystemSuccess, fail);
     
 
-    function onFileSystemSuccess(fileSystem) {
-         alert("Filesystem name is " +fileSystem.name);
-        // alert("Root directory name is " +fileSystem.root.name);
-    }
+    // function onFileSystemSuccess(fileSystem) {
+    //      alert("Filesystem name is " +fileSystem.name);
+    //     // alert("Root directory name is " +fileSystem.root.name);
+    // }
 
-    function fail(evt) {
-        alert(evt.target.error.code);
-    }
+    // function fail(evt) {
+    //     alert(evt.target.error.code);
+    // }
 
 	
 

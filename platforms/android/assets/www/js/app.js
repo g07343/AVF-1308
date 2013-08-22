@@ -9,17 +9,18 @@ function onDeviceReady() {
 
 	//all critical event listeners added here so they only fire AFTER device is ready
 	$("#takePicture").on("click", takePicture);
-	window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onFileSystemSuccess, fail);
+	$("#geoCheck").on('click', geoLock);
+	// window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onFileSystemSuccess, fail);
 	
 
-    function onFileSystemSuccess(fileSystem) {
-        //alert("Filesystem name is " +fileSystem.name);
-       // alert("Root directory name is " +fileSystem.root.name);
-    }
+ //    function onFileSystemSuccess(fileSystem) {
+ //        //alert("Filesystem name is " +fileSystem.name);
+ //       // alert("Root directory name is " +fileSystem.root.name);
+ //    }
 
-    function fail(evt) {
-        //alert(evt.target.error.code);
-    }
+ //    function fail(evt) {
+ //        //alert(evt.target.error.code);
+ //    }
 
 }
 
@@ -44,7 +45,6 @@ var takePicture = function() {
 	    destinationType: Camera.DestinationType.FILE_URI });
 
 	function onSuccess(imageURI) {
-		alert(imageURI);
 		alert("Picture Taken!  Tap the 'View' link at the bottom.");
 	    //var image = "<div data-role='ui-block-" + blockHolder[imageBlock] +"'><img src='" + imageURI + "' width='150' height='150' /></div>";
 	    //alert(image);
@@ -121,7 +121,7 @@ $("#instagramSearchSubmit").on("click", function() {
            
 
            	//run code to ensure the device has an internet connection before allowing a search!!!
-           	if (states[networkState] == 'No network connection') {
+           	if (states[networkState] == 'No network connection' || internetBlock == 'on') {
            		$("#networkError").slideDown();
            	} else {
            		$("#networkError").slideUp();
@@ -186,7 +186,8 @@ $("#flickrSearchSubmit").on("click", function() {
             
 
             //same code as above...checks for internet connection before doing a search and provides feedback to the user if necessary
-            if (states[networkState] == 'No network connection') {
+            if (states[networkState] == 'No network connection' || internetBlock = 'on') {
+           		alert(internetBlock);
            		$("#networkError").slideDown();
            	} else {
            		$("#networkError").slideUp();
@@ -224,7 +225,52 @@ $("#flickrSearchSubmit").on("click", function() {
 			};
 });
 
-//the below code allows me to fire an event listener on the dynamically created anchor tags
+
+var geoLock = function() {
+	if($("#geoCheck").is(':checked')){
+		alert("Geo Lock ON!");
+		navigator.geolocation.getCurrentPosition(onSuccess, onError, {enableHighAccuracy: true});
+		function onSuccess(position){
+			alert(' Your latitude is : '    + position.coords.latitude          + '\n' +
+        	' Your longitude is: '         + position.coords.longitude         + '\n');
+		homeLatitude = position.coords.latitude.toFixed(2);
+		homeLongitude = position.coords.longitude.toFixed(2);
+		beginWatch();
+		}
+		function onError(error){
+			alert(error);
+		}
+	} else {
+		internetBlock = 'off';
+		alert("Geo Lock OFF");
+		navigator.geolocation.clearWatch(watchId);
+	}
+};
+//in theory the below function sets the global variable 'internetBlock' to 'on' in the event the user gets too far from home.  I just have a poor understanding of latitude and longitude. 
+//pretty sure each 'point' of lat is 60 miles or so, so .01 would be around .6 
+var beginWatch = function(){
+	watchId = navigator.geolocation.watchPosition(onSuccess, onError, {maximumAge: 15000, timeout: 30000 });
+	function onSuccess(position){
+		var currentLatitude = position.latitude.toFixed(2);
+		var currentLongitude = position.longitude.toFixed(2);
+		if (currentLatitude != homeLatitude || currentLongitude != homeLongitude) {
+			internetBlock = 'on';
+			alert("internet block enabled!");
+		} else {
+			internetBlock = 'off';
+			alert("internet block is off because you are home");
+		}
+	}
+	function onError(error){
+		//alert("Cannot retrieve location because " + error);
+		 alert('code: '    + error.code    + '\n' +
+          'message: ' + error.message + '\n');
+
+	}
+
+}
+
+//the below code allows me to fire an event listener on the dynamically created anchor tags (allows the popup dialog boxes on the image buttons)
 $(document.body).on("click", ".picLinks", function(event){
    var title = $(this).children("div").children("div").children('a').attr("id");
    var object = $(this).children("div").children("div").children('a');
@@ -269,14 +315,10 @@ $(document.body).on("click", ".userDeleteLinks", function(event) {
 		//the below code is responsible for deleting locally stored files on Android, since it automatically saves them to a cache folder on the device
 		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, gotFS, fail);
 		function gotFS(fileSystem){
-			alert(fileSystem.name);
-			alert("Function is looking for: " +location);
 			fileSystem.root.getFile(location, {create: false, exclusive: false}, success, fail);
 		}
 		
 		function success(file){
-			alert("deleted file is: "+ file);
-			//alert(file.name);
 			file.remove(removeSuccess, removeFail);
 		}
 
@@ -285,17 +327,30 @@ $(document.body).on("click", ".userDeleteLinks", function(event) {
 		}
 
 		function removeSuccess(entry) {
-			alert("Picture deleted!");
+			//try out a simple system notification
+			navigator.notification.alert(
+    			'Picture deleted Successfully!',  
+    			alertDismissed,         
+    			'Delete a picture',            
+    			'Okay'                  
+			);
+
 		}
 		function removeFail(error) {
 			alert("File was ultimately not removed because: " + error);
 		}
+
+		function alertDismissed(){
+			//vibrate doesn't seem to work on android...hrrmmm.
+			navigator.notification.vibrate(500);
+		};
 
 		$('#localUL').trigger('create');
 		$('#localUL').listview('refresh');
 		$("#popupMenu").popup("close");
 	} else {
 		alert("File Saved!");
+		$("#popupMenu").popup("close");
 	};
 
 });
@@ -325,3 +380,7 @@ var imageHolder = [$("#localImages")];
 var currentImage;
 var currentSection;
 var currentLi;
+var homeLatitude;
+var homeLongitude;
+var internetBlock = "off";
+var watchId;

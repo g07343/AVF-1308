@@ -65,7 +65,7 @@ Android index.html file -->
                 <section id="image-search">
                     <h2>Want to search for images?</h2>
                     <section id="networkError">
-                        <h3 class="errorText">Uh Oh!  Looks like you don't have a network connection currently!  In order to search, please enable one, and try again!</h3>
+                        <h3 class="errorText">Uh Oh!  Looks like you don't have a network connection currently!  You may need to enable it on your device, or you have enabled "Home WIFI only" in settings.</h3>
                     </section>
                     <fieldset data-role="controlgroup" data-type="horizontal" style="display: inline">
                         <select id="searchChoose" name="searchChoose" data-native-menu="false">
@@ -134,6 +134,14 @@ Android index.html file -->
                 <h6>Quality effects file size</h6>
                 <label for="qualitySlider">Image Quality:</label>
                 <input type="range" name="qualitySlider" id="qualitySlider" value="60" min="20" max="100" step='5' />
+            </section>
+             <section>
+                <fieldset data-role="controlgroup">
+                    <h3>Only upload photos from your home WIFI?</h3>
+                    <h5>Checking this box will save your location and disallow uploading from other places</h5>
+                    <input type="checkbox" name="geoCheck" id="geoCheck" data-iconpos="right" />
+                    <label for="geoCheck">Enable?</label>
+                </fieldset> 
             </section>
             <section data-role="footer" class="links" data-theme="a" data-position="fixed">
                 <section data-role="navbar">
