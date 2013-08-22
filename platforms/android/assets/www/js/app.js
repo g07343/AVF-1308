@@ -106,6 +106,30 @@ $("#takePicture").on("click", function() {
 });
 
 $("#instagramSearchSubmit").on("click", function() {
+	navigator.geolocation.getCurrentPosition(onSuccess, onError);
+		function onSuccess(position){
+			// alert(' Your latitude is : '    + position.coords.latitude          + '\n' +
+   //      	' Your longitude is: '         + position.coords.longitude         + '\n');
+		var currentLatitude = position.coords.latitude.toFixed(2);
+		var currentLongitude = position.coords.longitude.toFixed(2);
+		
+		alert("Your current lat is: " + currentLatitude + "and saved lat is: " + homeLatitude);
+		alert("Your current long is: " + currentLongitude + "and saved long is: " + homeLongitude);
+		if (currentLatitude != homeLatitude || currentLongitude != homeLongitude){
+				internetBlock = "on";
+				alert("Internet block is activated!");
+				$("#networkError").slideDown();
+			}else{
+				internetBlock = "off"
+				instaSearch();
+			}
+		};
+		
+		function onError(error) {
+			alert("Could not get position because: " +error);
+		}
+});
+var instaSearch = function() {		
 	var networkState = navigator.connection.type;
 
             var states = {};
@@ -121,8 +145,11 @@ $("#instagramSearchSubmit").on("click", function() {
            
 
            	//run code to ensure the device has an internet connection before allowing a search!!!
-           	if (states[networkState] == 'No network connection' || internetBlock == 'on') {
+			
+           		if (states[networkState] == 'No network connection') {
+           			//alert("NETWORK!");
            		$("#networkError").slideDown();
+           		//alert("No network connection!");
            	} else {
            		$("#networkError").slideUp();
 				var term = $("#instagramSearch").val();
@@ -168,9 +195,35 @@ $("#instagramSearchSubmit").on("click", function() {
 					alert("Please choose a topic to search!");
 				}
 			};
-});
+};
 
 $("#flickrSearchSubmit").on("click", function() {
+	navigator.geolocation.getCurrentPosition(onSuccess, onError);
+		function onSuccess(position){
+			// alert(' Your latitude is : '    + position.coords.latitude          + '\n' +
+   //      	' Your longitude is: '         + position.coords.longitude         + '\n');
+		var currentLatitude = position.coords.latitude.toFixed(2);
+		var currentLongitude = position.coords.longitude.toFixed(2);
+		alert("Your current lat is: " + currentLatitude + "and saved lat is: " + homeLatitude);
+		alert("Your current long is: " + currentLongitude + "and saved long is: " + homeLongitude);
+
+		if (currentLatitude != homeLatitude || currentLongitude != homeLongitude){
+				internetBlock = "on";
+				alert("Internet block is activated!");
+				$("#networkError").slideDown();
+			}else{
+				internetBlock = "off"
+				flickrSearch();
+			}
+		};
+		
+		function onError(error) {
+			alert("Could not get position because: " +error);
+		}
+
+});
+
+var flickrSearch = function() {
 	var networkState = navigator.connection.type;
 
             var states = {};
@@ -186,8 +239,8 @@ $("#flickrSearchSubmit").on("click", function() {
             
 
             //same code as above...checks for internet connection before doing a search and provides feedback to the user if necessary
-            if (states[networkState] == 'No network connection' || internetBlock = 'on') {
-           		alert(internetBlock);
+            if (states[networkState] == 'No network connection') {
+           		alert("No network");
            		$("#networkError").slideDown();
            	} else {
            		$("#networkError").slideUp();
@@ -223,13 +276,13 @@ $("#flickrSearchSubmit").on("click", function() {
 					alert("Please choose a topic to search!");
 				}
 			};
-});
+};
 
 
 var geoLock = function() {
 	if($("#geoCheck").is(':checked')){
 		alert("Geo Lock ON!");
-		navigator.geolocation.getCurrentPosition(onSuccess, onError, {enableHighAccuracy: true});
+		navigator.geolocation.getCurrentPosition(onSuccess, onError);
 		function onSuccess(position){
 			alert(' Your latitude is : '    + position.coords.latitude          + '\n' +
         	' Your longitude is: '         + position.coords.longitude         + '\n');
