@@ -80,4 +80,16 @@ input {
 .errorText {
   color:red;
 }
- 
+#networkPanel {
+  position:fixed;
+}
+.networkIcon {
+margin-left:5em;
+}
+.lockIcon {
+  margin-left:5em;
+}
+/*.ui-bar-a.ui-footer {
+  background:#D84442;
+}
+ */

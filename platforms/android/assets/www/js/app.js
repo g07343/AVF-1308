@@ -10,6 +10,7 @@ function onDeviceReady() {
 	//all critical event listeners added here so they only fire AFTER device is ready
 	$("#takePicture").on("click", takePicture);
 	$("#geoCheck").on('click', geoLock);
+	$(".settingsButton").on('click', formatPanel);
 	// window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onFileSystemSuccess, fail);
 	
 
@@ -202,10 +203,12 @@ $("#flickrSearchSubmit").on("click", function() {
 		function onSuccess(position){
 			// alert(' Your latitude is : '    + position.coords.latitude          + '\n' +
    //      	' Your longitude is: '         + position.coords.longitude         + '\n');
+homeLatitude = 5;
 		var currentLatitude = position.coords.latitude.toFixed(2);
 		var currentLongitude = position.coords.longitude.toFixed(2);
 		alert("Your current lat is: " + currentLatitude + "and saved lat is: " + homeLatitude);
 		alert("Your current long is: " + currentLongitude + "and saved long is: " + homeLongitude);
+
 
 		if (currentLatitude != homeLatitude || currentLongitude != homeLongitude){
 				internetBlock = "on";
@@ -402,6 +405,37 @@ $(document.body).on("click", ".usrImg", function(event){
    currentSection = $(this).children("div").children("div").children('section').attr("id");
    currentLi = $(this);
 });
+//below function runs whenever the user opens the side panel to check their connectivity.  This updates the graphics in the
+//	side panel to reflect device conditions. 
+var formatPanel = function() {
+	var networkState = navigator.connection.type;
+
+            var states = {};
+            states[Connection.UNKNOWN]  = 'Unknown connection';
+            states[Connection.ETHERNET] = 'Ethernet connection';
+            states[Connection.WIFI]     = 'WiFi connection';
+            states[Connection.CELL_2G]  = 'Cell 2G connection';
+            states[Connection.CELL_3G]  = 'Cell 3G connection';
+            states[Connection.CELL_4G]  = 'Cell 4G connection';
+            states[Connection.CELL]     = 'Cell generic connection';
+            states[Connection.NONE]     = 'No network connection';
+
+	//update lock icon and text
+	if(internetBlock == "on"){
+		$(".lockIcon").attr("src", "img/lock.png");
+		$(".lockText").text('Enabled');
+	} else {
+		$(".lockIcon").attr("src", "img/unlock.png");
+		$(".lockText").text("Disabled");
+	};
+	if(states[networkState] == 'No network connection'){
+		$(".networkIcon").attr("src", "img/x.png");
+		$(".networkText").text('Disconnected');
+	} else {
+		$(".networkIcon").attr("src", "img/check.png");
+		$(".networkText").text(states[networkState]);
+	};
+};
 
 
 var imageCount = 0;
