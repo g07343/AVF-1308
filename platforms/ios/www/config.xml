@@ -10,4 +10,20 @@
     <access origin="*" />
     <preference name="fullscreen" value="true" />
     <preference name="webviewbounce" value="true" />
+    <feature name="Camera">
+        <param name="ios-package" value="CDVCamera" />
+    </feature>
+    <feature name="NetworkStatus">
+        <param name="ios-package" value="CDVConnection" />
+    </feature>
+    <feature name="File">
+        <param name="ios-package" value="CDVFile" />
+    </feature>
+    <feature name="FileTransfer">
+        <param name="ios-package" value="CDVFileTransfer" />
+    </feature>
+
+    <plugin name="File" value="CDVFile" />
+    <plugin name="FileTransfer" value="CDVFileTransfer" />
+
 </widget>

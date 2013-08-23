@@ -1,6 +1,6 @@
 /*Matthew Lewis
 Advanced Visual Frameworks Term 1308
-Android css file*/
+App css file*/
 
 html {
   height: 100%;
@@ -26,6 +26,10 @@ h1 {
     overflow:visible;
     padding:0px;
     text-align:center;
+}
+
+.renameSection {
+  display:none;
 }
 
 #flickrForm {
@@ -59,8 +63,30 @@ img { max-width: 100%; }
   background: #64D9EF;
 }
 
-#localImages {
-  display:inline-block;
+input {
+  display:block;
 }
 
- 
+
+.imageDivs {
+  display: inline;
+  margin-left: 17%;
+}
+
+#networkError {
+  display: none;
+}
+
+.errorText {
+  color:red;
+} 
+
+#networkPanel {
+  position:fixed;
+}
+.networkIcon {
+margin-left:5em;
+}
+.lockIcon {
+  margin-left:5em;
+}
