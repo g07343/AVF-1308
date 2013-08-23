@@ -38,6 +38,7 @@ Android index.html file -->
                     </fieldset>    
                 </ul>
             </section>
+             <a href="#networkPanel" data-role="button" class="settingsButton" data-icon="search">Current Settings</a> 
             <section data-role="footer" class="links" data-theme="a" data-position="fixed">
                 <section data-role="navbar">
                     <ul>
@@ -93,7 +94,8 @@ Android index.html file -->
                         </ul>    
                     </section>
                 </section>
-            <section data-role="footer" class="links" data-theme="a" data-position="fixed">
+                <a href="#networkPanel" data-role="button" class="settingsButton" data-icon="search">Current Settings</a>
+            <section data-role="footer" class="links" data-theme="a" data-position="fixed"> 
                 <section data-role="navbar">
                     <ul>
                         <li><a href="#home" data-icon="home">Home</a></li>
@@ -143,7 +145,8 @@ Android index.html file -->
                     <label for="geoCheck">Enable?</label>
                 </fieldset> 
             </section>
-            <section data-role="footer" class="links" data-theme="a" data-position="fixed">
+            <a href="#networkPanel" data-role="button" class="settingsButton" data-icon="search">Current Settings</a>
+            <section data-role="footer" class="links" data-theme="a" data-position="fixed"> 
                 <section data-role="navbar">
                     <ul>
                         <li><a href="#home" data-icon="home">Home</a></li>
@@ -156,6 +159,19 @@ Android index.html file -->
             <header data-role="header" data-theme="a"><h1>View full size</h1></header>
             <section id="imageHolder">
             </section>
+        </div>
+        <div data-role="page">
+            <div data-role="panel" id="networkPanel" data-position="left" data-display="push">
+                <h1>Connectivity Settings:</h1>
+                <section>
+                    <h2>Network Status:</h2>
+                    <img src="img/check.png" width="150" height="150" id="networkIcon" />
+                </section>
+                <section>
+                    <h2>Network Upload Lock</h2>
+                    <img src="img/unlock.png" width="150" height="150" id="lockIcon" />
+                </section>
+            </div>
         </div>
         <script type="text/javascript" src="js/jquery-1.10.1.min.js"></script>
         <script type="text/javascript" src="js/jquery.mobile-1.3.1.min.js"></script>
