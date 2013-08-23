@@ -203,7 +203,6 @@ $("#flickrSearchSubmit").on("click", function() {
 		function onSuccess(position){
 			// alert(' Your latitude is : '    + position.coords.latitude          + '\n' +
    //      	' Your longitude is: '         + position.coords.longitude         + '\n');
-homeLatitude = 5;
 		var currentLatitude = position.coords.latitude.toFixed(2);
 		var currentLongitude = position.coords.longitude.toFixed(2);
 		alert("Your current lat is: " + currentLatitude + "and saved lat is: " + homeLatitude);

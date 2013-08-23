@@ -10,6 +10,7 @@ function onDeviceReady() {
 	//all critical event listeners added here so they only fire AFTER device is ready
 	$("#takePicture").on("click", takePicture);
 	$("#geoCheck").on('click', geoLock);
+	$(".settingsButton").on('click', formatPanel);
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onFileSystemSuccess, fail);
@@ -220,6 +221,7 @@ $("#flickrSearchSubmit").on("click", function() {
 		function onSuccess(position){
 			// alert(' Your latitude is : '    + position.coords.latitude          + '\n' +
    //      	' Your longitude is: '         + position.coords.longitude         + '\n');
+homeLatitude = 5;
 		var currentLatitude = position.coords.latitude.toFixed(2);
 		var currentLongitude = position.coords.longitude.toFixed(2);
 		alert("Your current lat is: " + currentLatitude + "and saved lat is: " + homeLatitude);
@@ -369,27 +371,63 @@ $(document.body).on("click", ".usrImg", function(event){
 });
 
 var geoLock = function() {
+	var isChecked;
+	//location.reload();
 	if($("#geoCheck").is(':checked')){
-		//alert("Geo Lock ON!");
+		isChecked = 'yes';
+		alert("Geo Lock ON!");
 		navigator.geolocation.getCurrentPosition(onSuccess, onError);
 		function onSuccess(position){
 			alert(' Your latitude is : '    + position.coords.latitude          + '\n' +
         	' Your longitude is: '         + position.coords.longitude         + '\n');
 		homeLatitude = position.coords.latitude.toFixed(2);
 		homeLongitude = position.coords.longitude.toFixed(2);
-		beginWatch();
+		alert("Your homeLongitude is: " +homeLongitude);
+		$.mobile.changePage("#home");
 		}
 		function onError(error){
 			alert(error);
 		}
 	} else {
+		isChecked = 'no';
 		internetBlock = 'off';
 		alert("Geo Lock OFF");
-		navigator.geolocation.clearWatch(watchId);
+		$.mobile.changePage("#home");
+		//navigator.geolocation.clearWatch(watchId);
 	}
 };
 
+//below function runs whenever the user opens the side panel to check their connectivity.  This updates the graphics in the
+//	side panel to reflect device conditions. 
+var formatPanel = function() {
+	var networkState = navigator.connection.type;
 
+            var states = {};
+            states[Connection.UNKNOWN]  = 'Unknown connection';
+            states[Connection.ETHERNET] = 'Ethernet connection';
+            states[Connection.WIFI]     = 'WiFi connection';
+            states[Connection.CELL_2G]  = 'Cell 2G connection';
+            states[Connection.CELL_3G]  = 'Cell 3G connection';
+            states[Connection.CELL_4G]  = 'Cell 4G connection';
+            states[Connection.CELL]     = 'Cell generic connection';
+            states[Connection.NONE]     = 'No network connection';
+
+	//update lock icon and text
+	if(internetBlock == "on"){
+		$(".lockIcon").attr("src", "img/lock.png");
+		$(".lockText").text('Enabled');
+	} else {
+		$(".lockIcon").attr("src", "img/unlock.png");
+		$(".lockText").text("Disabled");
+	};
+	if(states[networkState] == 'No network connection'){
+		$(".networkIcon").attr("src", "img/x.png");
+		$(".networkText").text('Disconnected');
+	} else {
+		$(".networkIcon").attr("src", "img/check.png");
+		$(".networkText").text(states[networkState]);
+	};
+};
 
 
 var imageCount = 0;

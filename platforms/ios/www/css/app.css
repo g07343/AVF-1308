@@ -1,6 +1,6 @@
 /*Matthew Lewis
 Advanced Visual Frameworks Term 1308
-Android css file*/
+App css file*/
 
 html {
   height: 100%;
@@ -80,3 +80,13 @@ input {
 .errorText {
   color:red;
 } 
+
+#networkPanel {
+  position:fixed;
+}
+.networkIcon {
+margin-left:5em;
+}
+.lockIcon {
+  margin-left:5em;
+}
