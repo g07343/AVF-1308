@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<!-- Matthew Lewis
+AVF Course 1308
+research HTML File -->
+
+<!-- background used was found at www.subtlepatterns.com
+icons used in the "native features" section were found at http://all-free-download.com
+ -->
+
+ <html>
+ 	<head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <title>SimpleShare - Research Page</title>
+    </head>
+    <body>
+    	<img src="img/logo.png" alt="SimpleShare logo" id="logo">
+        <h5 id="subtitle">A no frills app for taking and uploading pictures to file sharing sites.</h5>
+        <h2 class="info">An app by Matthew Lewis</h2>
+        <h2 class="info">AVF 1308 Demo</h2>
+        <div>
+        	<section id="week1" class="section">
+        		<h2 class="center">Week 1 research: Data Research, Project Intent</h2>
+        		<p>
+				<strong>Less obvious perks of using 'live' data resources include logins and payments. How could Instagram be used in these two scenarios?</strong><br><br>
+				 
+
+				Using live data allows us as developers to greatly enhance the way a user interacts with our software.  Using Instagram for instance, we could allow the user to use live data in the form of any other possible login credentials they may possess such as Facebook or an email account such as Gmail.  Allowing them to use these takes the burden of needing to memorize yet another set of username/password combos, and also allows us as developers to authenticate that they are in fact who they claim to be.  Taking this a bit farther would be using live data in regards to making payments.  A few examples would be the obvious Paypal, or even some of the mobile versions coming into common use, such as Google Wallet.  These can be incorporated into an Instagram app to allow the user to securely make a payment if necessary, as it requires the user to authenticate with Paypal and use the live data the API would then return.<br><br>
+
+				 
+
+				<strong>Visit Programmableweb.com and search for JSON-P data sources. Why would we need JSON-P, specifically?</strong><br><br>
+
+				 
+
+				We must use JSON-P specifically in order to make cross-domain requests, as generally these are not allowed.  It also allows us to be able to do something with any data returned from the server, instead of simply viewing it.  In this way we can provide live data to the user that they can actually interact with.<br><br>
+
+				 
+
+				 <strong>Based on the JSON-P search results: what data resource(s) do you think might pair well with which types of Native device features?</strong><br><br>
+
+				Looking over the search results, it's very quickly apparent that many native device features will have a lot to do with what kind of data will be returned.  In Instagram's case, perhaps the device's camera will be utilized.  For a music identifying app, the device's microphone and speakers would be needed.  Likewise any sort of navigation software would require the use of the device's GPS to determine the user's location.<br><br>
+
+				 
+
+				<strong>Please describe any design and functionality intentions you may have for your Demo app components this month.</strong><br><br>
+
+				 
+
+				My app in regards to functionality is simple.  It allows a user to immediately take pictures from the very first screen, and then have them automatically uploaded to either Instagram or Flickr (or both).  This will require the use of the devices camera as well as possibly storage.  The user will also need to go into a settings screen to authenticate their account with Instagram/Flickr.  There will also be a "view" page, which will allow the user to either browse the pictures they've taken, or perform a search on the aforementioned photo sites.<br><br>
+
+				 
+
+				<strong>Briefly describe some past 'lessons learned' regarding workflow as it relates to research, design, development, etc.</strong><br><br>
+
+				In the past, I would oftentimes not leave myself enough time to truly grasp the material before a project was due.  This would often result in me implementing the requirements for that particular project in a way that wasn't as I originally intended.  Having learned this lesson, I have been studying much sooner and planning out my app in regards to how the different "pieces" will fit together and be laid out.  Having this over arching plan in my head gives me a better idea of how to proceed when it comes time to actually start building my app, and keeps me (mostly) organized throughout the process.<br><br>
+
+				 
+
+				I have also learned not to immediately focus on the details while actually developing an app.  I would often spend hours trying to perfect a certain aspect of a part of my entire project, when I may not have necessarily had the time to do so.  This would lead me to having to work extra hard to complete the rest of the app in time and result in a particularly polished portion of the app, next to another part that maybe was rushed in order for it to be finished in time.  I now get the basic functionality and layout completed before going back in to modify the smaller details.</p>
+        	</section>
+        	<section id="week2" class="section">
+        		<h2 class="center">Week 2 research: Accessibility</h2>
+                <p><strong>What are some of the ways that you could change your HTML on your Demo app to be more accessible?</strong><br><br>
+
+ 
+
+To make the HTML more accessible in my demo app, it would definitely require a lot of thought into the organization of elements on the page, as well as the tags and titles used to describe the individual elements.  A disabled user would quickly grow tired of trying to find a specific link using an assistive device if they could not figure out the organizational “flow” of my document’s structure.  Using appropriate names for tags and id’s would definitely also help as they can, on their own, infer a bit of meaning as to their content or perhaps where they lead.  One specific example regarding my app that I personally need to work on would be the inclusion of semantic ALT tags for my images.  I usually forget to add them, as I don’t really think about it.  This would only serve to harm my app’s usability from a broad standpoint.<br><br>
+
+ 
+
+<strong>Visit a video service on the web (like YouTube) and search for "Screen Reader Demo" and "Mobile Screen Reader" - what are some of the common frustrations (or common support mechanisms) that you see among the examples that are given - how could you fix them (or use them)?</strong><br><br>
+
+ 
+
+Just watching a few demonstration videos for various screen reading software, it is immediately apparent that they can be very arduous for the user.  Many of them rely on the user to learn and memorize countless keystrokes and combinations in order to do anything.  This sounds like a decently steep learning curve for those that have a hard time seeing.  One in particular practically required a specific browser in order to function correctly, as it simplified websites into nothing but text.  Finally, many of these feature a computerized voice that often times mispronounces words that it reads, which can confuse the user if they are unsure of what was said.<br><br>
+
+ 
+
+Solutions for this would be to use more simplified semantic HTML whenever possible, as well as keeping excessive structure, like too many unnecessary DIV tags, out of your markup.  This makes the site leaner and quicker to navigate for all users, and increases its usability tenfold.  Also, keeping styling css and javascript in external files where they belong will help to keep your HTML clean and easy to navigate.<br><br>
+
+ 
+
+<strong>Devices: Please list two devices (and some of their features) that are made specifically to support Accessibility.</strong><br><br>
+
+ 
+
+A good example of an accessibility feature would be an on screen keyboard, which is pretty standard for modern operating systems.  This allows those with mobility or dexterity issues to type using a less precise input method such as a mouse.  These often include large lettering and a ‘glow’ indicating the currently selected key.<br><br> 
+
+ 
+
+Another good and obvious example would be the wheelchair.  This gives mobility and freedom to those who for whatever reason cannot move about on their own.  Many are motorized and can allow for the owner to travel a decent amount of distance without the need to physically do anything but control a joystick.<br><br>
+
+ 
+
+<strong>Mobile Apps: Please list two apps (either Android or iOS, or both) that are made specifically to support Accessibility.</strong><br><br>
+
+ 
+
+A good example of built in technology present in Android devices is the inclusion of Google’s own text-to-speech engine.  Like those I just spent time watching on YouTube, it reads the screen content to the user and allows them to have an easier time navigating the device.  It even allows for the user to adjust the speech rate to go slower if necessary.<br><br>
+
+ 
+
+An app in the Play Store called “Big Font” is pretty neat in that it allows the user to increase the default font size the phone displays to larger than the built in limit.  This would be very handle for elderly people whose eyesight is not as great as it once was.  Even for everyday users who want to reduce eyestrain this could be a good app.</p>
+        	</section>
+        	<section id="week3" class="section">
+        		<h2 class="center">Week 3 research: Industry Research</h2>
+        	</section>
+        </div>
+        <h3><a href="index.html">Back to Launch Page</a></h3>
+    </body>
+ </html>
