@@ -10,18 +10,9 @@ function onDeviceReady() {
 	//all critical event listeners added here so they only fire AFTER device is ready
 	$("#takePicture").on("click", takePicture);
 	$("#geoCheck").on('click', geoLock);
+	$("#shakeCheck").on('click', shakeSet);
 	$(".settingsButton").on('click', formatPanel);
-	// window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, onFileSystemSuccess, fail);
 	
-
- //    function onFileSystemSuccess(fileSystem) {
- //        //alert("Filesystem name is " +fileSystem.name);
- //       // alert("Root directory name is " +fileSystem.root.name);
- //    }
-
- //    function fail(evt) {
- //        //alert(evt.target.error.code);
- //    }
 
 }
 
@@ -37,6 +28,61 @@ $('#pictures').on('pageshow', function(){
 	$('#localUL').trigger('create');
 	//$('#localUL').listview('refresh');
 });
+//first call startMonitor function to record initial device orientation and set variables
+var startMonitor = function() {
+    navigator.accelerometer.getCurrentAcceleration(onGetSuccess, onGetError);
+};
+
+var onGetSuccess = function(acceleration) {
+	//set up object to hold different accelerometer values to listen for user "shake" event
+	var currentAccel = {};
+
+    currentAccel.x = acceleration.x;
+    currentAccel.y = acceleration.y;
+    currentAccel.z = acceleration.z;
+    //now that values are recorded begin watch event to monitor for the actual shake...also passes the object for later.
+    startWatch(currentAccel);
+};
+
+var onGetError = function() {
+	alert('Accelerometer watch Error!');
+};
+
+var startWatch = function(oldAccel) {
+	 var options = { frequency: 300 };
+	watchID = navigator.accelerometer.watchAcceleration(onMonitorSuccess, onMonitorError, options);
+	
+	function onMonitorSuccess(acceleration){
+	//create another object to hold the difference between the old and new values
+		var accelDiff = {};
+		accelDiff.x = Math.abs(oldAccel.x - acceleration.x);
+		accelDiff.y = Math.abs(oldAccel.y - acceleration.y);
+		accelDiff.z = Math.abs(oldAccel.z - acceleration.z);
+
+		//check if accelDiff is enough to equal a shake and clear results/search fields if so
+		if (accelDiff.x + accelDiff.y + accelDiff.z >= 30) {
+			alert("PHONE SHAKEN!");
+			$("#instagram-ul").empty();
+			$("#flickr-ul").empty();
+			$("#instagramSearch").val("");
+			$("#flickrSearch").val("");
+		};
+	};
+
+	function onMonitorError(){
+		alert("Couldn't get accelerometer reading");
+	};
+};
+
+var stopWatch = function() {
+	alert("stop watch function run!");
+	    if (watchID) {
+	    	navigator.accelerometer.clearWatch(watchID);
+	    	watchID = null;
+	    	alert("watch stopped!");
+	   	};
+};
+
 
 var takePicture = function() {
 	//create variable to allow user to set image quality
@@ -107,6 +153,7 @@ $("#takePicture").on("click", function() {
 });
 
 $("#instagramSearchSubmit").on("click", function() {
+	if (geo == "on"){
 	navigator.geolocation.getCurrentPosition(onSuccess, onError);
 		function onSuccess(position){
 			// alert(' Your latitude is : '    + position.coords.latitude          + '\n' +
@@ -129,6 +176,9 @@ $("#instagramSearchSubmit").on("click", function() {
 		function onError(error) {
 			alert("Could not get position because: " +error);
 		}
+	} else {
+		instaSearch();
+	};
 });
 var instaSearch = function() {		
 	var networkState = navigator.connection.type;
@@ -184,7 +234,11 @@ var instaSearch = function() {
 										var pic = "<li class='picLinks'><a href=#detailView id=" + photo.images.standard_resolution.url + ">" + "<img src='" + photo.images.thumbnail.url + "' > '" + title + "</a></li>";
 										$("#instagram-ul").append(pic);
 										$("#instagram-ul").listview('refresh');
+										//start monitoring accelerometer for 'shake' event from user	
 								});
+								if (shakeReset == "on") {
+									startMonitor();													
+								};
 							};	
 						//$.mobile.activePage.trigger("refresh");
 						}
@@ -199,7 +253,9 @@ var instaSearch = function() {
 };
 
 $("#flickrSearchSubmit").on("click", function() {
-	navigator.geolocation.getCurrentPosition(onSuccess, onError);
+	//the below only runs if the variable 'geo' is set to 'on' meaning it checks the users current location against the saved location
+	if (geo == "on"){
+		navigator.geolocation.getCurrentPosition(onSuccess, onError);
 		function onSuccess(position){
 			// alert(' Your latitude is : '    + position.coords.latitude          + '\n' +
    //      	' Your longitude is: '         + position.coords.longitude         + '\n');
@@ -222,7 +278,10 @@ $("#flickrSearchSubmit").on("click", function() {
 		function onError(error) {
 			alert("Could not get position because: " +error);
 		}
-
+	} else {
+		flickrSearch();
+		
+	};
 });
 
 var flickrSearch = function() {
@@ -237,7 +296,6 @@ var flickrSearch = function() {
             states[Connection.CELL_4G]  = 'Cell 4G connection';
             states[Connection.CELL]     = 'Cell generic connection';
             states[Connection.NONE]     = 'No network connection';
-
             
 
             //same code as above...checks for internet connection before doing a search and provides feedback to the user if necessary
@@ -247,6 +305,7 @@ var flickrSearch = function() {
            	} else {
            		$("#networkError").slideUp();
 				var term = $("#flickrSearch").val();
+				//alert($("#flickrSearch").val());
 				$("#flickr-ul").empty();
 				//console.log($("#instagramSearch").val());
 				if(term !== "") {
@@ -268,8 +327,12 @@ var flickrSearch = function() {
 									var imageHolder = "<li class='picLinks'><a href=#detailView id=" + imageSource + ">" + "<img src='" + imageSource + "'height=150 width=150> '" + picture.title + "</a></li>";
 									$("#flickr-ul").append(imageHolder);
 									$("#flickr-ul").listview('refresh');
+									//start monitoring accelerometer for 'shake' event from user
 									//console.log(imageSource);
 								});
+								if (shakeReset == "on") {
+									startMonitor();
+								}
 							}
 						}
 						
@@ -284,6 +347,7 @@ var flickrSearch = function() {
 var geoLock = function() {
 	if($("#geoCheck").is(':checked')){
 		alert("Geo Lock ON!");
+		geo = "on";
 		navigator.geolocation.getCurrentPosition(onSuccess, onError);
 		function onSuccess(position){
 			alert(' Your latitude is : '    + position.coords.latitude          + '\n' +
@@ -295,9 +359,21 @@ var geoLock = function() {
 			alert(error);
 		}
 	} else {
+		geo = "off";
 		internetBlock = 'off';
 		alert("Geo Lock OFF");
 		navigator.geolocation.clearWatch(watchId);
+	}
+};
+
+var shakeSet = function() {
+	if($("#shakeCheck").is(':checked')){
+		alert("Shake to reset enabled!");
+		shakeReset = 'on';
+		//alert(shakeReset);
+	}else{
+		shakeReset = 'off';
+		stopWatch();
 	}
 };
 
@@ -406,7 +482,9 @@ $(document.body).on("click", ".usrImg", function(event){
 });
 //below function runs whenever the user opens the side panel to check their connectivity.  This updates the graphics in the
 //	side panel to reflect device conditions. 
+
 var formatPanel = function() {
+	//alert("format panel run!");
 	var networkState = navigator.connection.type;
 
             var states = {};
@@ -436,13 +514,16 @@ var formatPanel = function() {
 	};
 };
 
+//global variables listed below so seperate functions can access them
 
 var imageCount = 0;
 var imageHolder = [$("#localImages")];
 var currentImage;
 var currentSection;
 var currentLi;
+var geo = "off";
 var homeLatitude;
 var homeLongitude;
 var internetBlock = "off";
-var watchId;
+var shakeReset;
+var watchID;

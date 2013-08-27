@@ -26,6 +26,8 @@ li {
 	border-radius:10px;
 	padding-bottom: 5px;
 	margin-bottom:15px;
+	text-align:justify;
+
 }
 #subtitle {
 	margin-top:-5px;
@@ -55,6 +57,11 @@ li {
 #launch {
 	font-size:200%;
 	text-align:center;
+}
+.filler {
+	width:100%;
+    display: inline-block;
+    height:0px;
 }
 
 img { max-width: 100%; }
