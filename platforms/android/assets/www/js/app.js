@@ -236,6 +236,7 @@ var instaSearch = function() {
 										$("#instagram-ul").listview('refresh');
 										//start monitoring accelerometer for 'shake' event from user	
 								});
+								//start monitoring accelerometer for 'shake' event from user	
 								if (shakeReset == "on") {
 									startMonitor();													
 								};

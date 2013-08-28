@@ -219,6 +219,10 @@ var instaSearch = function() {
 										$("#instagram-ul").append(pic);
 										$("#instagram-ul").listview('refresh');
 								});
+								//start monitoring accelerometer for 'shake' event from user	
+								if (shakeReset == "on") {
+									startMonitor();													
+								};
 							};	
 						//$.mobile.activePage.trigger("refresh");
 						}
@@ -308,6 +312,10 @@ var flickrSearch = function() {
 									$("#flickr-ul").listview('refresh');
 									//console.log(imageSource);
 								});
+								//start monitoring accelerometer for 'shake' event from user	
+								if (shakeReset == "on") {
+									startMonitor();													
+								};
 							}
 						}
 						
@@ -465,6 +473,43 @@ var formatPanel = function() {
 		$(".networkText").text(states[networkState]);
 	};
 };
+//since iOS doesn't support the "get current acclerometer" functionality, we need to start monitoring outright, unlike
+//on Android where we can simply take an initial recording and start monitoring after.
+var startMonitor = function(){
+	alert("Monitoring for shaking...");
+	var initialCount = 0;
+	var options = { frequency: 300 };
+	var oldAccel = {};
+	watchID = navigator.accelerometer.watchAcceleration(onMonitorSuccess, onMonitorError, options);
+	function onMonitorSuccess(acceleration) {
+		//if the function hasn't run yet, set the default values to compare to, and then add one to "count" variable
+		if (initialCount == 0) {
+			oldAccel.x = acceleration.x;
+			oldAccel.y = acceleration.y;
+			oldAccel.z = acceleration.z;
+			initialCount ++;
+		} else if (initialCount > 0) {
+			//create an object to record the difference between the initial values and the incoming data.
+			var accelDiff = {};
+			accelDiff.x = Math.abs(oldAccel.x - acceleration.x);
+			accelDiff.y = Math.abs(oldAccel.y - acceleration.y);
+			accelDiff.z = Math.abs(oldAccel.z - acceleration.z); 
+			//check if the difference is enough to be considered a "shake" and if so, reset all search fields/content
+			if (accelDiff.x + accelDiff.y + accelDiff.z >= 30) {
+				alert("Device shaken!");
+				$("#instagram-ul").empty();
+				$("#flickr-ul").empty();
+				$("#instagramSearch").val("");
+				$("#flickrSearch").val("");
+			};
+		} 
+	}
+	function onMonitorError() {
+		alert("Could not get acceleration data!");
+	}
+}
+
+
 
 
 var imageCount = 0;
