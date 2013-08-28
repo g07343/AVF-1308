@@ -10,6 +10,7 @@ function onDeviceReady() {
 	//all critical event listeners added here so they only fire AFTER device is ready
 	$("#takePicture").on("click", takePicture);
 	$("#geoCheck").on('click', geoLock);
+	$("#shakeCheck").on('click', shakeSet);
 	$(".settingsButton").on('click', formatPanel);
 	
 	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -24,9 +25,19 @@ function onDeviceReady() {
     // function fail(evt) {
     //     alert(evt.target.error.code);
     // }
+ //    var options = { frequency: 3000 };
+	// watchID = navigator.accelerometer.watchAcceleration(onMonitorSuccess, onMonitorError, options);
 
+	// function onMonitorSuccess(acceleration) {
+	// 	alert("Device acceleration.x is: " + acceleration.x);
+	// 	alert("Device acceleration.y is: " + acceleration.y);
+	// 	alert("Device acceleration.z is: " + acceleration.z);
+
+	// };
 	
-
+	// function onMonitorError() {
+	// 	alert("Can't get acceleration values!");
+	// };
 }
 
 $('#home').on('pageinit', function(){
@@ -123,6 +134,8 @@ $("#takePicture").on("click", function() {
 });
 
 $("#instagramSearchSubmit").on("click", function() {
+	//check if the geoLock feature is enabled and run geolocation check if so else allow the search
+	if (geo == "on"){
 	navigator.geolocation.getCurrentPosition(onSuccess, onError);
 		function onSuccess(position){
 			// alert(' Your latitude is : '    + position.coords.latitude          + '\n' +
@@ -145,6 +158,9 @@ $("#instagramSearchSubmit").on("click", function() {
 		function onError(error) {
 			alert("Could not get position because: " +error);
 		}
+	} else {
+		instaSearch();
+	};
 });
 
 
@@ -217,6 +233,7 @@ var instaSearch = function() {
 };
 
 $("#flickrSearchSubmit").on("click", function() {
+	if (geo == "on"){
 	navigator.geolocation.getCurrentPosition(onSuccess, onError);
 		function onSuccess(position){
 			// alert(' Your latitude is : '    + position.coords.latitude          + '\n' +
@@ -239,7 +256,9 @@ $("#flickrSearchSubmit").on("click", function() {
 		function onError(error) {
 			alert("Could not get position because: " +error);
 		}
-
+	} else {
+		flickrSearch();
+	};
 });
 
 
@@ -370,18 +389,20 @@ $(document.body).on("click", ".usrImg", function(event){
 });
 
 var geoLock = function() {
+	//variable below along with forcing the user to changepage is a workaround to ios bug that won't allow you to do anything else 
+	//without accidentally unchecking the checkboxes again.  Crazy phonegap inconsistancies.
 	var isChecked;
 	//location.reload();
 	if($("#geoCheck").is(':checked')){
 		isChecked = 'yes';
 		alert("Geo Lock ON!");
+		geo = "on";
 		navigator.geolocation.getCurrentPosition(onSuccess, onError);
 		function onSuccess(position){
-			alert(' Your latitude is : '    + position.coords.latitude          + '\n' +
-        	' Your longitude is: '         + position.coords.longitude         + '\n');
+			// alert(' Your latitude is : '    + position.coords.latitude          + '\n' +
+   //      	' Your longitude is: '         + position.coords.longitude         + '\n');
 		homeLatitude = position.coords.latitude.toFixed(2);
 		homeLongitude = position.coords.longitude.toFixed(2);
-		alert("Your homeLongitude is: " +homeLongitude);
 		$.mobile.changePage("#home");
 		}
 		function onError(error){
@@ -390,12 +411,29 @@ var geoLock = function() {
 	} else {
 		isChecked = 'no';
 		internetBlock = 'off';
+		geo = 'off';
 		alert("Geo Lock OFF");
 		$.mobile.changePage("#home");
 		//navigator.geolocation.clearWatch(watchId);
 	}
 };
 
+var shakeSet = function() {
+	var isChecked;
+	if($("#shakeCheck").is(':checked')){
+		isChecked = 'yes';
+		alert("Shake to reset enabled!");
+		shakeReset = 'on';
+		//alert(shakeReset);
+		$.mobile.changePage("#home");
+	}else{
+		isChecked = 'no';
+		shakeReset = 'off';
+		alert("Shake to reset disabled!");
+		//stopWatch();
+		$.mobile.changePage("#home");
+	}
+};
 //below function runs whenever the user opens the side panel to check their connectivity.  This updates the graphics in the
 //	side panel to reflect device conditions. 
 var formatPanel = function() {
@@ -438,3 +476,5 @@ var homeLatitude;
 var homeLongitude;
 var internetBlock = "off";
 var watchId;
+var shakeReset = "off";
+var geo = 'off';
