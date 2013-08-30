@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<!-- Matthew Lewis
+AVF Course 1308
+index HTML File -->
+
+<!-- background used was found at www.subtlepatterns.com
+icons used in the "native features" section were found at http://all-free-download.com
+ -->
+
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <link rel="stylesheet" type="text/css"
+    media=" only screen and (max-width: 500px)"
+    href="css/phone.css" />
+        <title>SimpleShare - Easy Photo Sharing</title>
+    </head>
+    <body>
+        <img src="img/logo.png" alt="SimpleShare logo" id="logo">
+        <h5 id="subtitle">A no frills app for taking and uploading pictures to file sharing sites.</h5>
+        <h2 class="info">An app by Matthew Lewis</h2>
+        <h2 class="info">AVF 1308 Demo</h2>
+        <div>
+            <section id="nativeFeatures" class="section">
+                <h2 class="center">iOS/Android Native Feature Demos</h2>
+                <ul>
+                    <!-- use li "fillers" to create invisible spacing elements to distribute icons across screen width -->
+                    <li class="filler"></li>
+                    <li class="androidios"><img src="img/icons/camera.png" class="icon"><br><a href="app.html#pictures" class="label">Camera</a></li>
+                    <li class="androidios"><img src="img/icons/storage.png" class="icon"><br><a href="app.html#pictures" class="label">Device Storage</a></li>
+                    <li class="androidios"><img src="img/icons/gps.png" class="icon"><br><a href="app.html#settings" class="label">GPS</a></li>
+                    <li class="androidios"><img src="img/icons/rotate.png" class="icon"><br><a href="#" class="label">Accelerometer</a></li>
+                    <li class="androidios"><img src="img/icons/network.png" class="icon"><br><a href="app.html#pictures" class="label">Network</a></li>
+                    <li class="filler"></li>
+                </ul>
+            </section>
+            <section id="apiSection" class="section">
+                <h2 class="center">JSON-P Data APIs</h2>
+                <ul>    
+                    <li class="filler"></li>             
+                    <li><img src="img/instagram.png" class="icon"><br><a href ="app.html#pictures" class="label">Instagram API</a></li>
+                    <li><img src="img/flickr.png" class="icon"><br><a href="app.html#pictures" class="label">Flickr API</a></li>
+                    <li class="filler"></li>
+                </ul>
+            </section>
+            <section id="research" class="section">
+                <h2 class="center">Research</h2>
+                <ul>
+                     <li class="filler"></li>
+                    <li><img src="img/icons/Book.png" class="icon"><br><a href ="research.html#week1" class="label">Week 1 research</a></li>
+                    <li><img src="img/icons/Book.png" class="icon"><br><a href="research.html#week2" class="label">Week 2 research</a></li>
+                    <li><img src="img/icons/Book.png" class="icon"><br><a href="research.html#week3" class="label">Week 3 research</a></li>
+                     <li class="filler"></li>
+                </ul>
+            </section>
+            <section id="launch" class="section">
+                <a href="app.html" id="launchBtn">Launch App!</a>
+            </section>
+        </div>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/index.js"></script>
+    </body>
+</html>

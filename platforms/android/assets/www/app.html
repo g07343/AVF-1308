@@ -1,0 +1,236 @@
+<!-- Matthew Lewis
+Advanced Visual Frameworks Term: 1308
+Android index.html file -->
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+        <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+        <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.3.1.min.css" />
+        <link rel="stylesheet" type="text/css" href="css/app.css" />
+        <link rel="stylesheet" type="text/css" href="css/AVFDemoTheme.css" />
+        <title>Simple Share - Taking the clutter out of photo sharing!</title>
+    </head>
+    <body>
+        <!-- (adding css style to manually set background as css rules keep getting overridden by jquery) -->
+        <div data-role="page" id="home" data-theme="a" style="background-image: url('img/paper.png')">
+            <div data-role="panel" id="homeNetworkPanel" data-display="push"  data-dismissible="true" data-theme="a">
+                <div>
+                    <h1>Connectivity Settings:</h1>
+                    <h2>Network Status:</h2>
+                    <img src="img/check.png" width="50" height="50" class="networkIcon" />
+                    <h6 class="networkText">Connected!</h6>
+                </div>
+                <div>
+                    <h2>Network Upload Lock:</h2>
+                    <img src="img/unlock.png" width="50" height="50" class="lockIcon" />
+                    <h6 class="lockText">Disabled</h6>
+                </div>
+            </div>
+            <div>
+                <header data-role="header" data-theme="a"><img class="center" src="img/logo.png" /></header>
+            </div>
+            <div>
+                <section id="previewPane">
+                    <!-- Main program launches the device camera immediately, and this is where the camera preview lives...for now just an image placeholder to get the idea across-->
+                    <a href="#" data-role="button" id="takePicture" data-icon="plus">Take Picture</a> 
+                </section>
+                <section id="toggles">
+                    <h4>Upload photos to:</h4>
+                    <ul data-role="listview" data-inset="true">
+                        <fieldset data-role="controlgroup">
+                            <li>
+                                <input type="checkbox" name="instagram "id="instagram" data-iconpos="right" />
+                                <label for="instagram">Instagram</label>
+                            </li>
+                            <li> 
+                                <input type="checkbox" name="flickr" id="flickr" data-iconpos="right" />
+                                <label for="flickr">Flickr</label>
+                            </li>
+                        </fieldset>    
+                    </ul>
+                </section>
+            </div> 
+            <div>
+                <section data-role="footer" class="links" data-theme="a" data-position="fixed">
+                    <a href="#homeNetworkPanel" data-role="button" class="settingsButton" data-icon="search">Current Settings</a>
+                    <section data-role="navbar">
+                        <ul>
+                            <li><a href="#pictures" data-icon="search">View taken pictures</a></li>
+                            <li><a href="#settings" data-icon="gear">Settings</a></li>
+                        </ul>
+                    </section>
+                </section>
+            </div>
+        </div>
+        <!-- jquery mobile requires me to use divs around all viewable page content otherwise the slide panel doesn't format correctly.  meh -->
+        <div data-role="page" id="pictures" data-theme="a" style="background-image: url('img/paper.png')">
+            <div data-role="panel" id="picturesNetworkPanel" data-display="push"  data-dismissible="true" data-theme="a">
+                <div>
+                    <h1>Connectivity Settings:</h1>
+                    <h2>Network Status:</h2>
+                    <img src="img/check.png" width="50" height="50" class="networkIcon" />
+                    <h6 class="networkText">Connected!</h6>
+                </div>
+                <div>
+                    <h2>Network Upload Lock:</h2>
+                    <img src="img/unlock.png" width="50" height="50" class="lockIcon" />
+                    <h6 class="lockText">Disabled</h6>
+                </div>
+            </div>
+            <div>
+                <header data-role="header" data-theme="a"><h1>View your Pictures</h1></header>
+            </div>
+            <div>
+                <section data-role="fieldcontain" id="user-images">
+                    <div data-role="popup" id="popupMenu" data-transition="flip">
+                        <ul data-role="listview" data-inset="true" style="min-width:300px;">
+                            <li data-role="divider" data-theme="a">What do you want to do?</li>
+                            <li class="userEditLinks" data-icon="info"><a href="#">Rename Picture</a></li>
+                            <li class="userPicLinks" data-icon="search"><a href="#">View full size</a></li>
+                            <li class="userDeleteLinks" data-icon="delete"><a href="#">Remove Picture</a></li>
+                        </ul>
+                    </div>
+                    <h1>Local Images:</h1>
+                        <ul data-role="listview" id="localUL" data-inset="true">    
+                        </ul>      
+                </section>
+                <section id="image-search">
+                    <h2>Want to search for images?</h2>
+                    <section id="networkError">
+                        <h3 class="errorText">Uh Oh!  Looks like you don't have a network connection currently!  You may need to enable it on your device, or you have enabled "Home WIFI only" in settings.</h3>
+                    </section>
+                    <fieldset data-role="controlgroup" data-type="horizontal" style="display: inline">
+                        <select id="searchChoose" name="searchChoose" data-native-menu="false">
+                            <option data-placeholder="true" id="searchPlaceholder"value>Select a photo sharing service to search</option>
+                            <option value="instagram">Instagram</option>
+                            <option value="flickr">Flickr</option>
+                        </select>
+                    </fieldset>
+                </section>
+                <section data-role="content" id="instagramSearchSection">
+                    <label for="instagramSearch">Search Instagram (Single word tag labels only)</label>
+                    <input type="text" id="instagramSearch" name="instagramSearch" />
+                    <input type="submit" id="instagramSearchSubmit" name="instagramSearchSubmit" value="Search"/>
+                    <section data-role="content" id="instagramResults">
+                        <ul id="instagram-ul" data-role="listview" data-inset="true">
+                        </ul>
+                    </section>
+                </section>
+                <section data-role="content" id="flickrSearchSection">
+                    <label for="flickrSearch">Search Flickr</label>
+                    <input type="text" id="flickrSearch" name="flickrSearch" />
+                    <input type="submit" id="flickrSearchSubmit" name="flickrSearchSubmit" value="Search"/>
+                    <section data-role="content" id="flickrResults">
+                        <ul id="flickr-ul" data-role="listview" data-inset="true">
+                        </ul>    
+                    </section>
+                </section>
+            </div>
+            <div>
+                <section data-role="footer" class="links" data-theme="a" data-position="fixed"> 
+                    <a href="#picturesNetworkPanel" data-role="button" class="settingsButton" data-icon="search">Current Settings</a>
+                    <section data-role="navbar">
+                        <ul>
+                            <li><a href="#home" data-icon="home">Home</a></li>
+                            <li><a href="#settings" data-icon="gear">Settings</a></li>
+                        </ul>
+                    </section>
+                </section>
+            </div>
+        </div>
+        <!-- jquery mobile requires me to use divs around all viewable page content otherwise the slide panel doesn't format correctly.  meh -->
+        <div data-role="page" id="settings" data-theme="a" style="background-image: url('img/paper.png')">
+            <div data-role="panel" id="settingsNetworkPanel" data-display="push"  data-dismissible="true" data-theme="a">
+                <div>
+                    <h1>Connectivity Settings:</h1>
+                    <h2>Network Status:</h2>
+                    <img src="img/check.png" width="50" height="50" class="networkIcon" />
+                    <h6 class="networkText">Connected!</h6>
+                </div>
+                <div>
+                    <h2>Network Upload Lock:</h2>
+                    <img src="img/unlock.png" width="50" height="50" class="lockIcon" />
+                    <h6 class="lockText">Disabled</h6>
+                </div>
+            </div>
+            <div>
+                <header data-role="header" data-theme="a"><h1>Configure a photo service:</h1></header>
+            </div>
+            <div>
+                <fieldset data-role="controlgroup">
+                    <select id="serviceChoose" name="serviceChoose" data-native-menu="false">
+                        <option data-placeholder="true" id="servicePlaceholder" value="Select a photo sharing service">Select a photo sharing service</option>
+                        <option value="instagram">Instagram</option>
+                        <option value="flickr">Flickr</option>
+                    </select>
+                </fieldset>
+                <section data-role="content" id="instagramForm">
+                    <img src="img/instagram.png" />
+                    <h3>Instagram account Settings:</h3>
+                    <label for="instagramName">Instagram user name:</label>
+                    <input type="text" id="instagramName" name="instagramName" />
+                    <label for="instagramPassword">Password:</label>
+                    <input type="password" id="instagramPassword" name="instagramPassword" />
+                    <input type="submit" id="instagramSubmit" name="instagramSubmit" value="Verify and Save account settings"/>
+                </section>
+                <section data-role="content" id="flickrForm">
+                    <img src="img/flickr.png" />
+                    <h3>Flickr account Settings:</h3>
+                    <label for="flickrName">Flickr user name:</label>
+                    <input type="text" id="flickrName" name="flickrName" />
+                    <label for="flickrPassword">Password:</label>
+                    <input type="password" id="flickrPassword" name="flickrPassword" />
+                    <input type="submit" id="flickrSubmit" name="flickrSubmit" value="Verify and Save account settings"/>
+                </section>
+                <section>
+                    <h3>Change image quality</h3>
+                    <h6>Quality effects file size</h6>
+                    <label for="qualitySlider">Image Quality:</label>
+                    <input type="range" name="qualitySlider" id="qualitySlider" value="60" min="20" max="100" step='5' />
+                </section>
+                 <section>
+                    <fieldset data-role="controlgroup">
+                        <h3>Only upload photos from your home WIFI?</h3>
+                        <h5>Checking this box will save your location and disallow uploading from other places</h5>
+                        <input type="checkbox" name="geoCheck" id="geoCheck" data-iconpos="right" />
+                        <label for="geoCheck">Enable?</label>
+                    </fieldset> 
+                </section>
+                <section>
+                    <fieldset data-role="controlgroup">
+                        <h3>Enable 'shake to reset' on searches?</h3>
+                        <h5>Checking this box will allow you to reset the search for Instagram and Flickr by simply shaking your device.</h5>
+                        <input type="checkbox" name="shakeCheck" id="shakeCheck" data-iconpos="right" />
+                        <label for="shakeCheck">Enable?</label>
+                    </fieldset>
+                </section>
+            </div>
+            <div>
+                <section data-role="footer" class="links" data-theme="a" data-position="fixed">
+                <a href="#settingsNetworkPanel" data-role="button" class="settingsButton" data-icon="search">Current Settings</a> 
+                    <section data-role="navbar">
+                        <ul>
+                            <li><a href="#home" data-icon="home">Home</a></li>
+                            <li><a href="#pictures" data-icon="search">View Taken Pictures</a></li>
+                        </ul>
+                    </section>
+                </section>
+            </div>
+        </div>
+        <div data-role="page" id="detailView" data-add-back-btn="true" data-theme="a" style="background-image: url('img/paper.png')">
+            <header data-role="header" data-theme="a"><h1>View full size</h1></header>
+            <section id="imageHolder">
+            </section>
+        </div>
+        <script type="text/javascript" src="js/jquery-1.10.1.min.js"></script>
+        <script type="text/javascript" src="js/jquery.mobile-1.3.1.min.js"></script>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="cordova_plugins.js"></script>
+        <script type="text/javascript" src="js/app.js"></script>
+    </body>
+</html>
