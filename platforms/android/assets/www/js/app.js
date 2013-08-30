@@ -17,10 +17,38 @@ function onDeviceReady() {
 }
 
 $('#home').on('pageinit', function(){
-var flickrEnabled = false;
-var instagramEnabled = false;
 var fullPhoto = "";
+$( document ).on( "swipeleft swiperight", "#home", function( e ) {
+		if ( $.mobile.activePage.jqmData( "panel" ) !== "open" ) {
+            if ( e.type === "swiperight"  ) {
+                $( "#homeNetworkPanel" ).panel( "open" );
+                formatPanel();
+            } 
+        }
+	});
+});
 
+//set up swipe listeners for each page with a side panel
+$('#pictures').on('pageinit', function(){
+	$( document ).on( "swipeleft swiperight", "#pictures", function( e ) {
+		if ( $.mobile.activePage.jqmData( "panel" ) !== "open" ) {
+            if ( e.type === "swiperight"  ) {
+                $( "#picturesNetworkPanel" ).panel( "open" );
+                formatPanel();
+            } 
+        }
+	});
+});
+
+$("#settings").on("pageinit", function(){
+	$( document ).on( "swipeleft swiperight", "#settings", function( e ) {
+		if ( $.mobile.activePage.jqmData( "panel" ) !== "open" ) {
+            if ( e.type === "swiperight"  ) {
+                $( "#settingsNetworkPanel" ).panel( "open" );
+                formatPanel();
+            } 
+        }
+	});
 });
 
 //need to refresh listview for user images EVERY time the page loads or styling isn't correct.
