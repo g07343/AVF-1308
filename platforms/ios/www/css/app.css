@@ -28,19 +28,6 @@ h1 {
     text-align:center;
 }
 
-#takePicture {
-  position:absolute;
-  top:15%;
-  left: 28%;
-  width: 50%;
-  
-}
-
-#toggles {
-   position: absolute; 
-  top: 68%;
-  width:100%;
-}
 .renameSection {
   display:none;
 }
@@ -68,7 +55,6 @@ h1 {
        background-size: cover;
  }  
  
-
  img.center {   display: block;   margin-left: auto;   margin-right: auto; }
 
 img { max-width: 100%; }
@@ -93,28 +79,17 @@ input {
 
 .errorText {
   color:red;
-} 
-
+}
 #networkPanel {
   position:fixed;
 }
 .networkIcon {
-margin-left:6em;
+margin-left:5em;
 }
 .lockIcon {
-  margin-left:6em;
+  margin-left:5em;
 }
-
-
-#image-search {
-  margin-top: 20%;
+/*.ui-bar-a.ui-footer {
+  background:#D84442;
 }
-#otherSettings {
-  margin-top: 10%;
-}
-.networkText {
-  text-align:center;
-}
-.lockText {
-  text-align:center;
-}
+ */

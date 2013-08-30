@@ -49,10 +49,9 @@ li {
 }
 
 .label {
-	/*padding-right:40px;
-	padding-left:5px;*/
+	padding-right:40px;
+	padding-left:5px;
 	color: #247CC1;
-	text-align:center;
 }
 
 #launch {
@@ -63,17 +62,36 @@ li {
 	width:100%;
     display: inline-block;
     height:0px;
+
+
 }
+
+#legend {
+	font-size:12pt;
+}
+#legend li {
+	margin-right:5%;
+}
+
+.apple {
+	border: 3px solid #80AAC2;
+	border-radius:12px;	
+}
+.android {
+	border: 3px solid #A5C63B;
+	border-radius:12px;	
+}
+.androios {
+	border: 3px solid #A5C63B;
+	border-radius:12px;
+
+box-shadow: 0px 0px 0px 3px #80AAC2;
+}
+
+
+
 
 img { max-width: 100%; }
-
-.androidios img{
-	padding:2px;
-	border:3px solid #80AAC2;
-	/*border:3px solid #8EAF7A;*/
-	border-radius:10px;
-}
-
 
 @media only screen and (max-width: 320px) {
 	body {

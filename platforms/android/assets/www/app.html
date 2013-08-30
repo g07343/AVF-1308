@@ -37,7 +37,7 @@ Android index.html file -->
             <div>
                 <section id="previewPane">
                     <!-- Main program launches the device camera immediately, and this is where the camera preview lives...for now just an image placeholder to get the idea across-->
-                    <a href="#" data-role="button" id="takePicture" data-icon="plus">Take Picture</a> 
+                    <a href="#" id="takePicture"><img src="img/camera-take.png" /></a> 
                 </section>
                 <section id="toggles">
                     <h4>Upload photos to:</h4>
@@ -159,10 +159,11 @@ Android index.html file -->
                 </div>
             </div>
             <div>
-                <header data-role="header" data-theme="a"><h1>Configure a photo service:</h1></header>
+                <header data-role="header" data-theme="a"><h1>Settings:</h1></header>
             </div>
             <div>
                 <fieldset data-role="controlgroup">
+                    <h3>Configure a photo service</h3>
                     <select id="serviceChoose" name="serviceChoose" data-native-menu="false">
                         <option data-placeholder="true" id="servicePlaceholder" value="Select a photo sharing service">Select a photo sharing service</option>
                         <option value="instagram">Instagram</option>
@@ -187,28 +188,26 @@ Android index.html file -->
                     <input type="password" id="flickrPassword" name="flickrPassword" />
                     <input type="submit" id="flickrSubmit" name="flickrSubmit" value="Verify and Save account settings"/>
                 </section>
-                <section>
-                    <h3>Change image quality</h3>
-                    <h6>Quality effects file size</h6>
-                    <label for="qualitySlider">Image Quality:</label>
-                    <input type="range" name="qualitySlider" id="qualitySlider" value="60" min="20" max="100" step='5' />
-                </section>
-                 <section>
-                    <fieldset data-role="controlgroup">
+                <div data-role="collapsible-set" id="otherSettings">
+                    <section data-role="collapsible">
+                        <h3>Change image quality</h3>
+                        <h6>Quality effects file size</h6>
+                        <label for="qualitySlider">Image Quality:</label>
+                        <input type="range" name="qualitySlider" id="qualitySlider" value="60" min="20" max="100" step='5' />
+                    </section>
+                     <section data-role="collapsible">
                         <h3>Only upload photos from your home WIFI?</h3>
                         <h5>Checking this box will save your location and disallow uploading from other places</h5>
                         <input type="checkbox" name="geoCheck" id="geoCheck" data-iconpos="right" />
                         <label for="geoCheck">Enable?</label>
-                    </fieldset> 
-                </section>
-                <section>
-                    <fieldset data-role="controlgroup">
+                    </section>
+                    <section data-role="collapsible">
                         <h3>Enable 'shake to reset' on searches?</h3>
                         <h5>Checking this box will allow you to reset the search for Instagram and Flickr by simply shaking your device.</h5>
                         <input type="checkbox" name="shakeCheck" id="shakeCheck" data-iconpos="right" />
                         <label for="shakeCheck">Enable?</label>
-                    </fieldset>
-                </section>
+                    </section>
+                </div>
             </div>
             <div>
                 <section data-role="footer" class="links" data-theme="a" data-position="fixed">
